@@ -1,4 +1,5 @@
-import styles from './App.module.scss'
+import styles from './App.module.scss';
+import NavBar from './components/NavBar/NavBar';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import Home from './pages/Home/Home';
@@ -13,14 +14,15 @@ function App() {
 
     return (
         <>
-            <SignIn />
-            <SignUp />
-            <Home />
-            <MyLoans />
-            <Search />
-            <BookDetails />
-            <AddBook />
-            <NotFound />
+            <NavBar/>
+            <SignIn/>
+            <SignUp/>
+            <Home/>
+            <MyLoans/>
+            <Search/>
+            <BookDetails/>
+            <AddBook/>
+            <NotFound/>
 
         </>
     )
