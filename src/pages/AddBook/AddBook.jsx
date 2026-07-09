@@ -1,4 +1,4 @@
-import styles from './AddBook.module.css'
+import styles from './AddBook.module.scss'
 
 function AddBook() {
 

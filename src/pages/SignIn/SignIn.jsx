@@ -1,4 +1,4 @@
-import styles from './SignIn.module.css'
+import styles from './SignIn.module.scss'
 
 function SignIn() {
 

@@ -1,4 +1,4 @@
-import styles from './MyLoans.module.css'
+import styles from './MyLoans.module.scss'
 
 function MyLoans() {
 

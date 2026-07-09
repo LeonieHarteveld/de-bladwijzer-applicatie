@@ -1,4 +1,4 @@
-import styles from './BookDetails.module.css'
+import styles from './BookDetails.module.scss'
 
 function BookDetails() {
 
