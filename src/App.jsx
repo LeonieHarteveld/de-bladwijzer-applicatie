@@ -1,4 +1,5 @@
 import styles from './App.module.scss';
+import {Routes, Route} from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
@@ -13,18 +14,22 @@ function App() {
 
 
     return (
-        <>
+        <div className={styles.app}>
             <NavBar/>
-            <SignIn/>
-            <SignUp/>
-            <Home/>
-            <MyLoans/>
-            <Search/>
-            <BookDetails/>
-            <AddBook/>
-            <NotFound/>
-
-        </>
+            <main className={styles.main}>
+                <Routes>
+                    <Route path="/login" element={<SignIn/>}/>
+                    <Route path="/registreren" element={<SignUp/>}/>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/mijn-leningen" element={<MyLoans/>}/>
+                    <Route path="/zoekpagina" element={<Search/>}/>
+                    <Route path="/boek-details" element={<BookDetails/>}/>
+                    <Route path="/boek-toevoegen" element={<AddBook/>}/>
+                    <Route path="*" element={<NotFound/>}/>
+                </Routes>
+                {/*    footer komt nog*/}
+            </main>
+        </div>
     )
 }
 
