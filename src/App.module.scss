@@ -1,6 +1,11 @@
+@use './styles/_mixins' as *;
+
 .app {
   display: flex;
   flex-direction: row;
-  gap: 5rem;
+  @include mobile {
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 

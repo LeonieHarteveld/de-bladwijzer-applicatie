@@ -15,6 +15,7 @@ function App() {
 
     return (
         <div className={styles.app}>
+            <div className={styles.navbar}></div>
             <NavBar/>
             <main className={styles.main}>
                 <Routes>
