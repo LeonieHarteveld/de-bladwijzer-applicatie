@@ -1,0 +1,73 @@
+@use '../../styles/_variables' as *;
+
+.bookDetails {
+  background: $primary-color;
+  box-shadow: $shadow-soft;
+  border-radius: 15px;
+  padding: 5rem;
+
+
+&__inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3rem;
+
+  padding: 2rem;
+}
+
+  &__imgWrapper {
+    width: 450px;
+  }
+
+  &__img {
+    width: 100%;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 2rem;
+    width: 100%;
+
+    h2{
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    h5 {
+      letter-spacing: 10%;
+    }
+  }
+
+  &__textTop {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__textBottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+
+  .bookDetails {
+    &__availability {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    &__statusDot {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      background-color: green;
+      flex-shrink: 0;
+    }
+  }
+
+}

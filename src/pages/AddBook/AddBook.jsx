@@ -1,5 +1,4 @@
 import styles from './AddBook.module.scss'
-import welcomeImg from "../../assets/images/welcomeimg.png";
 import PageLayout from "../../components/PageLayout/PageLayout.jsx";
 
 function AddBook() {

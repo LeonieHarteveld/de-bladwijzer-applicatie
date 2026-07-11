@@ -8,7 +8,6 @@ function BackButton({ text = "Terug", onClick }) {
             className={styles.backButton}
             type="button"
             onClick={onClick}
-            // onClick={() => navigate(-1)};
         >
             <img src={arrow} alt="" aria-hidden="true" />
             <span>{text}</span>
