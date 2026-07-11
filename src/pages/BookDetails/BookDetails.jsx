@@ -59,6 +59,7 @@ return (
                     <PrimaryButton
                         onClick={handleLoan}
                         text="Lenen"
+                        type='button'
                     />
 
                 </div>

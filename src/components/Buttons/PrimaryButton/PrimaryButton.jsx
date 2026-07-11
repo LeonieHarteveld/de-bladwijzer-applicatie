@@ -3,6 +3,7 @@ import styles from './PrimaryButton.module.scss';
 function PrimaryButton({
                            onClick,
                            text,
+    type,
                            size = 'medium',
                            fullWidth = false
                        }) {
@@ -15,7 +16,7 @@ function PrimaryButton({
     return (
         <button
             className={buttonClass}
-            type="button"
+            type={type}
             onClick={onClick}
         >
             {text}
