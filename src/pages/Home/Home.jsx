@@ -1,8 +1,19 @@
 import styles from './Home.module.scss';
 import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import welcomeImg from '../../assets/images/welcomeimg.png';
+import {useNavigate} from "react-router-dom";
+import BackButton from '../../components/Buttons/BackButton/BackButton.jsx';
+
 
 function Home() {
+
+    const navigate = useNavigate();
+
+    function handleNavigate(e) {
+        e.preventDefault();
+        navigate("/boek-details");
+    }
+
     return (
         <PageLayout
             title={
@@ -17,7 +28,11 @@ function Home() {
             }
             subtitle="Ontdek boeken per genre"
         >
-            {/* inhoud van de homepagina */}
+            <BackButton
+            text="Terug naar overzicht"
+            onClick={handleNavigate}
+            />
+
         </PageLayout>
     );
 }

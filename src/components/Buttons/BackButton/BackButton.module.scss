@@ -1,0 +1,12 @@
+@use '../../../styles/_variables' as *;
+
+.backButton {
+  display: flex;
+  gap: 1rem;
+
+  color: $secondary-color;
+
+  &:hover {
+    color: $text-primary-color;
+  }
+}

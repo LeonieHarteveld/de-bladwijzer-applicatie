@@ -1,0 +1,11 @@
+.error {
+  &__img {
+    width: 100%;
+  }
+
+  &__wrapper__img {
+    display: block;
+    width: min(100%, 22rem);
+    height: auto;
+  }
+}
