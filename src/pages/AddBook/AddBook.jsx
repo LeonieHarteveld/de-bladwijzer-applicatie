@@ -1,12 +1,17 @@
 import styles from './AddBook.module.scss'
+import welcomeImg from "../../assets/images/welcomeimg.png";
+import PageLayout from "../../components/PageLayout/PageLayout.jsx";
 
 function AddBook() {
 
 
     return (
-        <>
-            <h1>Add book pagina</h1>
-        </>
+        <PageLayout
+            title="Boek toevoegen"
+            subtitle="Voeg een nieuw boek toe aan de collectie"
+        >
+            {/* inhoud van de pagina */}
+        </PageLayout>
     )
 }
 

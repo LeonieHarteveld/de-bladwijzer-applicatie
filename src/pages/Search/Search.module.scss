@@ -1,0 +1,14 @@
+.searchpage {
+  width: 100%;
+  padding: 6rem 5rem;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    width: 100%;
+    padding: 2rem;
+    border-radius: 10px;
+  }
+}

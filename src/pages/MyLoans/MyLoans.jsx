@@ -1,12 +1,16 @@
 import styles from './MyLoans.module.scss'
+import PageLayout from "../../components/PageLayout/PageLayout.jsx";
 
 function MyLoans() {
 
 
     return (
-        <>
-            <h1>MyLoans pagina</h1>
-        </>
+        <PageLayout
+            title="Mijn leningen"
+            subtitle="Een overzicht van jouw huidige leningen"
+        >
+            {/* inhoud van de pagina */}
+        </PageLayout>
     )
 }
 
