@@ -14,10 +14,11 @@ function App() {
 
 
     return (
-        <div className={styles.app}>
-            <div className={styles.navbar}></div>
+        <div className={styles.app__inner}>
+            <div className={styles.app__navbar}>
             <NavBar/>
-            <main className={styles.main}>
+            </div>
+            <main className={styles.app__main}>
                 <Routes>
                     <Route path="/login" element={<SignIn/>}/>
                     <Route path="/registreren" element={<SignUp/>}/>
@@ -35,3 +36,4 @@ function App() {
 }
 
 export default App
+
