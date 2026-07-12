@@ -123,7 +123,7 @@ function AddBook() {
                                 required
                             />
 
-                            <span className={styles.addBookForm__counter}>
+                            <span className={styles.addBookForm__textarea}>
                                 {formData.description.length}/500
                             </span>
                         </div>
