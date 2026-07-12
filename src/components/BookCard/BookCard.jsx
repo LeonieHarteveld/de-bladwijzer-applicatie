@@ -2,19 +2,23 @@ import styles from './BookCard.module.scss';
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
 
 
-function BookCard({book, author, genre}) {
+function BookCard({book}) {
     return (
         <article
             className={styles.bookcard}
         >
             <div
                 className={styles.bookcard__inner}>
+
+                <div
+                className={styles.bookcard__imgWrapper}>
                 <img
                     className={styles.bookcard__img}
                     src={book.image}
                     alt={book.title}/>
-                <h2>{book.title}</h2>
-                <p>{author?.name}</p>
+            </div>
+                <h3>{book.title}</h3>
+                <p>{book.author?.name}</p>
                 <h5 className={`${styles.bookcard__status} ${
                     book.available
                         ? styles.bookcard__statusAvailable
