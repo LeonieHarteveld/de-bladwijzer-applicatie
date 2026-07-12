@@ -1,21 +1,25 @@
 import styles from './Home.module.scss';
 import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import welcomeImg from '../../assets/images/welcomeimg.png';
-import { useNavigate } from 'react-router-dom';
+
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 
-import BackButton from '../../components/Buttons/BackButton/BackButton.jsx';
 import GenreTabs from '../../components/GenreTabs/GenreTabs.jsx';
 import BookCardGrid from '../../components/BookCardGrid/BookCardGrid.jsx';
-import { libraryService } from '../../helpers/libraryService.jsx';
+
+import { libraryService }  from '../../helpers/libraryService.jsx';
+
+import {
+    enrichBooks,
+    filterBooks,
+} from '../../helpers/bookHelper.jsx';
 
 function Home() {
-    const navigate = useNavigate();
-
     const [books, setBooks] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [genres, setGenres] = useState([]);
+
     const [selectedGenre, setSelectedGenre] = useState(null);
 
     const [loading, setLoading] = useState(true);
@@ -29,16 +33,20 @@ function Home() {
             setError(false);
 
             try {
-                const data = await libraryService(
+                const response = await libraryService(
                     controller.signal
                 );
 
-                setBooks(data.books);
-                setAuthors(data.authors);
-                setGenres(data.genres);
+                setBooks(response.books);
+                setAuthors(response.authors);
+                setGenres(response.genres);
             } catch (error) {
                 if (!axios.isCancel(error)) {
-                    console.error(error);
+                    console.error(
+                        'Bibliotheekgegevens ophalen mislukt:',
+                        error
+                    );
+
                     setError(true);
                 }
             } finally {
@@ -56,42 +64,26 @@ function Home() {
     }, []);
 
     const booksWithDetails = useMemo(() => {
-        return books.map((book) => {
-            const author = authors.find(
-                (author) => author.id === book.authorId
-            );
-
-            const genre = genres.find(
-                (genre) => genre.id === book.genreId
-            );
-
-            return {
-                ...book,
-                author,
-                genre,
-            };
-        });
+        return enrichBooks(
+            books,
+            authors,
+            genres
+        );
     }, [books, authors, genres]);
 
     const filteredBooks = useMemo(() => {
-        if (selectedGenre === null) {
-            return booksWithDetails;
-        }
-
-        return booksWithDetails.filter(
-            (book) => book.genreId === selectedGenre
+        return filterBooks(
+            booksWithDetails,
+            selectedGenre
         );
     }, [booksWithDetails, selectedGenre]);
-
-    function handleNavigate() {
-        navigate('/boek-details');
-    }
 
     return (
         <PageLayout
             title={
                 <span className={styles.home__title}>
                     Welkom terug
+
                     <img
                         className={styles.home__welcomeImg}
                         src={welcomeImg}
@@ -101,7 +93,9 @@ function Home() {
             }
             subtitle="Ontdek boeken per genre"
         >
-            {loading && <p>Boeken worden geladen...</p>}
+            {loading && (
+                <p>Boeken worden geladen...</p>
+            )}
 
             {!loading && error && (
                 <p className="errorMessage">
@@ -120,11 +114,6 @@ function Home() {
                     <BookCardGrid books={filteredBooks} />
                 </>
             )}
-
-            <BackButton
-                text="Terug naar overzicht"
-                onClick={handleNavigate}
-            />
         </PageLayout>
     );
 }
