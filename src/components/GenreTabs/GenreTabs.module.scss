@@ -1,0 +1,36 @@
+@use '../../styles/_variables' as *;
+
+.genreTabs {
+  font-size: $font-size-p;
+  font-weight: 700;
+  letter-spacing: 12%;
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0.5rem;
+
+    list-style: none;
+  }
+
+  &__button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+
+    background-color: $primary-color;
+    box-shadow: $shadow-medium;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  &__buttonActive {
+    background-color: $secondary-color;
+    color: $text-secondary-color;
+  }
+
+}

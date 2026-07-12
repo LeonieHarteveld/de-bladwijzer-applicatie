@@ -3,6 +3,7 @@ import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import welcomeImg from '../../assets/images/welcomeimg.png';
 import {useNavigate} from "react-router-dom";
 import BackButton from '../../components/Buttons/BackButton/BackButton.jsx';
+import GenreTabs from "../../components/GenreTabs/GenreTabs.jsx"
 
 
 function Home() {
@@ -28,6 +29,7 @@ function Home() {
             }
             subtitle="Ontdek boeken per genre"
         >
+<GenreTabs />
             <BackButton
             text="Terug naar overzicht"
             onClick={handleNavigate}
