@@ -32,7 +32,8 @@ return (
                 >
                     <img
                         className={styles.bookDetails__img}
-                        src={testafbeelding} alt=""
+                        src="https://ia800100.us.archive.org/view_archive.php?archive=/5/items/l_covers_0012/l_covers_0012_64.zip&file=0012646506-L.jpg"
+                        alt=""
                     />
                 </div>
                 <div

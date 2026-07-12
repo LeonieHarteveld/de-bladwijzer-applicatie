@@ -5,10 +5,12 @@
   color:  $text-secondary-color;
   box-shadow: $shadow-soft;
 
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 0.8rem;
 
-  width: 200px;
+width: fit-content;
+max-width: 100%;
+  align-self: flex-start;
 
   font-weight: 700;
   letter-spacing: 5%;
@@ -16,26 +18,26 @@
   &:hover {
     background-color: $text-secondary-color;
     color:  $secondary-color;
+  }
 
-    &--small {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.875rem;
-    }
+  &--small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+  }
 
-    &--medium {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-    }
+  &--medium {
+    padding: 0.75rem 2.5rem;
+    font-size: 1rem;
+  }
 
-    &--large {
-      padding: 1rem 2.5rem;
-      font-size: 1.125rem;
-    }
+  &--large {
+    padding: 1rem 2.5rem;
+    font-size: 1.125rem;
+  }
 
-    &--fullWidth {
-      width: 100%;
-    }
-
+  &--fullWidth {
+    width: 100%;
   }
 
 }
+
