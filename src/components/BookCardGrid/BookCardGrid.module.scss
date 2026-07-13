@@ -1,11 +1,12 @@
 .BookCardGrid {
-  padding: 3rem 3rem 0 0;
+  padding: 2rem 3rem 0 0;
 
   &__list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 3rem;
+    list-style: none;
   }
 
 }

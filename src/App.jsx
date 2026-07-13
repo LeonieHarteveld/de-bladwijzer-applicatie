@@ -25,7 +25,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/mijn-leningen" element={<MyLoans/>}/>
                     <Route path="/zoekpagina" element={<Search/>}/>
-                    <Route path="/boek-details" element={<BookDetails/>}/>
+                    <Route path="/boek-details/:id" element={<BookDetails/>}/>
                     <Route path="/boek-toevoegen" element={<AddBook/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>

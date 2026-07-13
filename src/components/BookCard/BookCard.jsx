@@ -1,8 +1,16 @@
 import styles from './BookCard.module.scss';
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 
 function BookCard({book}) {
+    const navigate = useNavigate();
+
+    function handleClick() {
+        navigate(`/boek-details/${book.id}`);
+    }
+
     return (
         <article
             className={styles.bookcard}
@@ -30,8 +38,7 @@ function BookCard({book}) {
                     {book.available ? 'Beschikbaar' : 'Niet beschikbaar'}
                 </h5>
                 <PrimaryButton
-                    onClick={() => console.log('clicked')}
-                    // hier komt navigeren naar boekdetail pagina functie
+                    onClick={handleClick}
                     text="Bekijk"
                     fullWidth/>
             </div>

@@ -1,13 +1,14 @@
 import styles from './Search.module.scss'
 import SearchBar from '../../components/SearchBar/SearchBar.jsx'
+import {useSearchParams} from 'react-router-dom';
 
-import { useEffect, useMemo, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 
 import GenreTabs from '../../components/GenreTabs/GenreTabs.jsx';
 import BookCardGrid from '../../components/BookCardGrid/BookCardGrid.jsx';
 
-import { libraryService }  from '../../helpers/libraryService.jsx';
+import {libraryService} from '../../helpers/libraryService.jsx';
 
 import {
     enrichBooks,
@@ -15,6 +16,7 @@ import {
 } from '../../helpers/bookHelper.jsx';
 
 function Search() {
+    const [searchParams] = useSearchParams();
     const [books, setBooks] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [genres, setGenres] = useState([]);
@@ -23,6 +25,8 @@ function Search() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+
+    const searchTerm = searchParams.get('q') ?? '';
 
     useEffect(() => {
         const controller = new AbortController();
@@ -73,9 +77,11 @@ function Search() {
     const filteredBooks = useMemo(() => {
         return filterBooks(
             booksWithDetails,
-            selectedGenre
+            selectedGenre,
+            searchTerm
         );
-    }, [booksWithDetails, selectedGenre]);
+    }, [booksWithDetails, selectedGenre, searchTerm]);
+
 
     return (
         <section
@@ -83,8 +89,11 @@ function Search() {
             <div
                 className={styles.searchpage__inner}>
                 <h1>Zoeken</h1>
-                <SearchBar/>
-                <h2>Of ontdek per genre</h2>
+                <SearchBar initialValue={searchTerm}/>
+
+                {!searchTerm && (
+                    <>
+                        <h2>Of ontdek per genre</h2>
 
                 {loading && (
                     <p>Boeken worden geladen...</p>
@@ -103,10 +112,29 @@ function Search() {
                             selectedGenre={selectedGenre}
                             onSelectGenre={setSelectedGenre}
                         />
-
-                        <BookCardGrid books={filteredBooks} />
                     </>
                 )}
+                    </>
+                )}
+
+                {searchTerm && (
+                    <>
+                        <h2>Resultaten voor “{searchTerm}”</h2>
+
+                        <p>
+                            {filteredBooks.length}{' '}
+                            {filteredBooks.length === 1
+                                ? 'boek gevonden'
+                                : 'boeken gevonden'}
+                        </p>
+                    </>
+                )}
+
+
+                {!loading && !error && (
+                    <BookCardGrid books={filteredBooks}/>
+                )}
+
             </div>
         </section>
     )
