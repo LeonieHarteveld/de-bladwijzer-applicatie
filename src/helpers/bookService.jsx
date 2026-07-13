@@ -11,3 +11,14 @@ export async function getBooks(signal) {
 
     return response.data;
 }
+
+export async function addBook(bookData) {
+    const response = await axios.post(`${API_BASE_URL}/books`,
+        bookData, {
+        headers: {
+            'novi-education-project-id': API_KEY,
+        },
+    })
+
+    return response.data;
+}

@@ -3,14 +3,15 @@ import PageLayout from "../../components/PageLayout/PageLayout.jsx";
 import {useNavigate} from "react-router-dom";
 import { useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
+import {addBook} from "../../helpers/bookService.jsx";
 
 function AddBook() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        titel: '',
-        auteur: '',
+        title: '',
+        authorId: '',
         isbn: '',
-        genre: '',
+        genreId: '',
         publicationDate: '',
         description: '',
     });
@@ -22,9 +23,29 @@ function AddBook() {
         });
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        console.log(formData);
+
+        const normalizedIsbn = formData.isbn.trim();
+
+        const newBook = {
+            ...formData,
+            authorId: Number(formData.authorId),
+            genreId: Number(formData.genreId),
+            isbn: normalizedIsbn,
+            image: `https://covers.openlibrary.org/b/isbn/${normalizedIsbn}-L.jpg`,
+            available: true,
+        };
+
+        try {
+            const createdBook = await addBook(newBook);
+            navigate(`/boek-details/${createdBook.id}`);
+        } catch (error) {
+            console.error(
+                'Boek toevoegen is mislukt:',
+                error.response?.data ?? error
+            );
+        }
     }
 
     return (
@@ -55,13 +76,14 @@ function AddBook() {
                     </div>
 
                     <div className={styles.addBookForm__field}>
-                        <label htmlFor="author">Auteur*</label>
+                        <label htmlFor="authorId">Auteur*</label>
                         <input
-                            id="author"
-                            name="author"
-                            type="text"
+                            id="authorId"
+                            name="authorId"
+                            type="number"
+                            min="1"
                             placeholder="Bijv. E.L. Vance"
-                            value={formData.author}
+                            value={formData.authorId}
                             onChange={handleChange}
                             required
                         />
@@ -81,13 +103,14 @@ function AddBook() {
                     </div>
 
                     <div className={styles.addBookForm__field}>
-                        <label htmlFor="genre">Genre*</label>
+                        <label htmlFor="genreId">Genre*</label>
                         <input
-                            id="genre"
-                            name="genre"
-                            type="text"
+                            id="genreId"
+                            name="genreId"
+                            type="number"
+                            min="1"
                             placeholder="Bijv. Fantasy"
-                            value={formData.genre}
+                            value={formData.genreId}
                             onChange={handleChange}
                             required
                         />
