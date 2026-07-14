@@ -9,7 +9,9 @@ import {libraryService} from "../../helpers/libraryService.jsx";
 import {
     enrichBooks,
 } from '../../helpers/bookHelper.jsx';
+import {updateBook} from "../../helpers/bookService.jsx"
 import {useState, useEffect, useMemo} from "react";
+import {API_BASE_URL, API_KEY} from "../../constants/api.jsx";
 
 function BookDetails() {
     const navigate = useNavigate();
@@ -22,10 +24,32 @@ function BookDetails() {
     const [authors, setAuthors] = useState([]);
     const [genres, setGenres] = useState([]);
 
+    async function handleLoan() {
+        if (!selectedBook?.available) {
+            return;
+        }
 
-    function handleLoan(e) {
-        e.preventDefault();
-        navigate("/");
+        try {
+            const updatedBook = await updateBook({
+                ...selectedBook,
+                available: false,
+            });
+
+            setBooks((currentBooks) =>
+                currentBooks.map((book) =>
+                    book.id === updatedBook.id
+                        ? updatedBook
+                        : book
+                )
+            );
+
+            navigate("/mijn-leningen");
+        } catch (error) {
+            console.error(
+                "Het lenen van het boek is mislukt:",
+                error
+            );
+        }
     }
 
     useEffect(() => {
@@ -141,11 +165,15 @@ function BookDetails() {
                                     <h3>Beschrijving</h3>
                                     <p>{selectedBook.description}</p>
                                 </div>
+
+
+                                {selectedBook.available &&
                                 <PrimaryButton
                                     onClick={handleLoan}
                                     text="Lenen"
                                     type='button'
                                 />
+                                }
                             </div>
                         </article>
 

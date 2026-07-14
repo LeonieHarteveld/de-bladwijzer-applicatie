@@ -1,0 +1,36 @@
+@use "../../styles/variables" as *;
+
+.loancard {
+  width: 300px;
+  padding: 2rem;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    gap: 2rem;
+
+    h3{
+      display: flex;
+      align-items: flex-end;
+      min-height: 40px;
+    }
+
+  }
+
+  &__imgWrapper {
+    height: 280px;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__img {
+    width: 100%;
+    object-fit: fill;
+  }
+}

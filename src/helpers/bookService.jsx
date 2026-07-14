@@ -22,3 +22,13 @@ export async function addBook(bookData) {
 
     return response.data;
 }
+
+export async function updateBook(bookData) {
+    const response = await axios.put(`${API_BASE_URL}/books/${bookData.id}`,
+        bookData, {
+            headers: {
+                'novi-education-project-id': API_KEY,
+            }
+        },);
+    return response.data;
+}

@@ -1,5 +1,6 @@
 import styles from './MyLoans.module.scss'
 import PageLayout from "../../components/PageLayout/PageLayout.jsx";
+import LoanCard from "../../components/LoanCard/LoanCard.jsx";
 
 function MyLoans() {
 
@@ -8,7 +9,7 @@ function MyLoans() {
             title="Mijn leningen"
             subtitle="Een overzicht van jouw huidige leningen"
         >
-            {/* inhoud van de pagina */}
+            <LoanCard />
         </PageLayout>
     )
 }
