@@ -3,7 +3,6 @@ import PageLayout from "../../components/PageLayout/PageLayout.jsx";
 
 function MyLoans() {
 
-
     return (
         <PageLayout
             title="Mijn leningen"

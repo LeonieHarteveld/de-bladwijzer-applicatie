@@ -11,3 +11,14 @@ export async function getAuthors(signal) {
 
     return response.data;
 }
+
+export async function addAuthor(authorData) {
+    const response = await axios.post(`${API_BASE_URL}/authors`,
+        authorData, {
+            headers: {
+                'novi-education-project-id': API_KEY,
+            },
+        })
+
+    return response.data;
+}

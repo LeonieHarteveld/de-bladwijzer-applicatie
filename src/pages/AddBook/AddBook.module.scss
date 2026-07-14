@@ -35,13 +35,10 @@
     }
 
     input,
-    textarea {
-      width: 100%;
+    select,
+    textarea
+    {
       padding: 0.9rem 1.25rem;
-
-      font: inherit;
-      color: inherit;
-      background-color: $primary-color;
 
       border: 1px solid #d8cdc7;
       border-radius: 0.75rem;
@@ -49,23 +46,10 @@
     }
 
     textarea {
+      width: 100%;
       min-height: 12rem;
       padding-bottom: 2.5rem;
       resize: vertical;
     }
   }
-
-  &__textareaWrapper {
-    position: relative;
-  }
-
-  &__textarea {
-    position: absolute;
-    right: 1rem;
-    bottom: 0.75rem;
-
-    color: #6f625d;
-    font-size: 0.75rem;
-  }
-
 }
