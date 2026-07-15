@@ -99,7 +99,7 @@ function SignIn() {
                 />
 
                 {error && (
-                    <p className={styles.error} role="alert">
+                    <p>
                         Inloggen is mislukt. Controleer je gegevens.
                     </p>
                 )}

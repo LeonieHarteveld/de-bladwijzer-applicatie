@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { API_BASE_URL, API_KEY } from '../constants/api.jsx';
+import { AuthContext } from '../context/AuthContext';
 
 export async function getBooks(signal) {
+    const { user } = useContext(AuthContext);
+
     const response = await axios.get(`${API_BASE_URL}/books`, {
         headers: {
             'novi-education-project-id': API_KEY,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         signal,
     });
