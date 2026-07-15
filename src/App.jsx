@@ -1,39 +1,56 @@
 import styles from './App.module.scss';
-import {Routes, Route} from 'react-router-dom';
-import NavBar from './components/NavBar/NavBar';
-import SignIn from './pages/SignIn/SignIn';
-import SignUp from './pages/SignUp/SignUp';
-import Home from './pages/Home/Home';
-import MyLoans from './pages/MyLoans/MyLoans';
-import Search from './pages/Search/Search';
-import BookDetails from './pages/BookDetails/BookDetails';
-import AddBook from './pages/AddBook/AddBook';
-import NotFound from './pages/NotFound/NotFound';
+import { Routes, Route, Outlet } from 'react-router-dom';
 
-function App() {
+import NavBar from './components/NavBar/NavBar.jsx';
 
+import SignIn from './pages/SignIn/SignIn.jsx';
+import SignUp from './pages/SignUp/SignUp.jsx';
+import Home from './pages/Home/Home.jsx';
+import MyLoans from './pages/MyLoans/MyLoans.jsx';
+import Search from './pages/Search/Search.jsx';
+import BookDetails from './pages/BookDetails/BookDetails.jsx';
+import AddBook from './pages/AddBook/AddBook.jsx';
+import NotFound from './pages/NotFound/NotFound.jsx';
 
+function MainLayout() {
     return (
         <div className={styles.app__inner}>
-            <div className={styles.app__navbar}>
-            <NavBar/>
-            </div>
+            <NavBar />
             <main className={styles.app__main}>
-                <Routes>
-                    <Route path="/login" element={<SignIn/>}/>
-                    <Route path="/registreren" element={<SignUp/>}/>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/mijn-leningen" element={<MyLoans/>}/>
-                    <Route path="/zoekpagina" element={<Search/>}/>
-                    <Route path="/boek-details/:id" element={<BookDetails/>}/>
-                    <Route path="/boek-toevoegen" element={<AddBook/>}/>
-                    <Route path="*" element={<NotFound/>}/>
-                </Routes>
-                {/*    footer komt nog*/}
+                <Outlet />
             </main>
         </div>
-    )
+    );
+}
+
+function AuthRouteLayout() {
+    return (
+        <div className={styles.app__auth}>
+            <Outlet />
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <Routes>
+            {/* Zonder navigatie, met footer */}
+            <Route element={<AuthRouteLayout />}>
+                <Route path="/login" element={<SignIn />} />
+                <Route path="/registreren" element={<SignUp />} />
+            </Route>
+
+            {/* Met navigatie en footer */}
+            <Route element={<MainLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/mijn-leningen" element={<MyLoans />} />
+                <Route path="/zoekpagina" element={<Search />} />
+                <Route path="/boek-details/:id" element={<BookDetails />}/>
+                <Route path="/boek-toevoegen" element={<AddBook />}/>
+                <Route path="*" element={<NotFound />} />
+            </Route>
+        </Routes>
+    );
 }
 
 export default App;
-
