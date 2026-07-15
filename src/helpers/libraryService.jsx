@@ -1,17 +1,10 @@
 import axios from 'axios';
-import { API_BASE_URL, API_KEY } from '../constants/api.jsx';
 
-function getConfig(signal) {
-    return {
-        headers: {
-            'novi-education-project-id': API_KEY,
-        },
-        signal,
-    };
-}
+import { API_BASE_URL } from '../constants/api.jsx';
+import { getAuthConfig } from '../helpers/configHelper.jsx';
 
 export async function libraryService(signal) {
-    const config = getConfig(signal);
+    const config = getAuthConfig(signal);
 
     const [
         booksResponse,
@@ -29,6 +22,3 @@ export async function libraryService(signal) {
         genres: genresResponse.data,
     };
 }
-
-
-

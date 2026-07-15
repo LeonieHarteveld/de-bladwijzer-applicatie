@@ -17,7 +17,7 @@ import NotFound from './pages/NotFound/NotFound.jsx';
 import {AuthContext} from './context/AuthContext.jsx';
 
 function App() {
-    const { isAuth } = useContext(AuthContext);
+    const { isAuth, user } = useContext(AuthContext);
 
     function MainLayout() {
         return (
@@ -52,7 +52,7 @@ function App() {
                 <Route path="/mijn-leningen" element={isAuth? <MyLoans /> : <Navigate to="/login"/>} />
                 <Route path="/zoekpagina" element={isAuth? <Search /> : <Navigate to="/login"/>} />
                 <Route path="/boek-details/:id" element={isAuth? <BookDetails /> : <Navigate to="/login"/>}/>
-                <Route path="/boek-toevoegen" element={isAuth? <AddBook /> : <Navigate to="/login"/>}/>
+                <Route path="/boek-toevoegen" element={!isAuth ? <Navigate to="/login" replace /> : user?.roles?.includes('editor') ? <AddBook /> : <Navigate to="/" replace />}/>
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>

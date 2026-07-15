@@ -16,7 +16,7 @@ import { AuthContext } from '../../context/AuthContext';
 
 function NavBar() {
     const [menuOpen, toggleMenuOpen] = useState(false);
-    const { isAuth, logout } = useContext(AuthContext);
+    const { isAuth, logout, user } = useContext(AuthContext);
 
 
 
@@ -84,6 +84,7 @@ function NavBar() {
                             <span>Zoeken</span>
                         </NavLink>
                     </li>
+                    {user?.roles?.includes('editor') && (
                     <li>
                         <NavLink to="/boek-toevoegen"
                                  className={({isActive}) => isActive ? styles.activeMenuLink : styles.defaultMenuLink}
@@ -92,6 +93,7 @@ function NavBar() {
                             <span>Boek toevoegen</span>
                         </NavLink>
                     </li>
+                        )}
                 </ul>
                 <div className={styles.navbar__img}>
                     <img src={navImg} alt="Een stapel boeken"/>
