@@ -1,57 +1,89 @@
 import styles from './SignIn.module.scss';
-import { useState } from 'react';
+
+import axios from 'axios';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { AuthContext } from '../../context/AuthContext.jsx';
+
 import AuthLayout from '../../components/AuthLayout/AuthLayout.jsx';
 import FormField from '../../components/FormField/FormField.jsx';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 
+import {
+    API_BASE_URL,
+    API_KEY,
+} from '../../constants/api.jsx';
 
 function SignIn() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const { login } = useContext(AuthContext);
 
-    function handleChange(event) {
-        const { name, value } = event.target;
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, toggleError] = useState(false);
+    const [loading, toggleLoading] = useState(false);
 
-        setFormData((currentFormData) => ({
-            ...currentFormData,
-            [name]: value,
-        }));
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        toggleError(false);
+        toggleLoading(true);
+
+        try {
+            const result = await axios.post(
+                `${API_BASE_URL}/login`,
+                {
+                    email,
+                    password,
+                },
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'novi-education-project-id': API_KEY,
+                    },
+                },
+            );
+
+            login(
+                result.data.token,
+                result.data.user,
+            );
+        } catch (e) {
+            console.error(
+                'Inloggen mislukt:',
+                e.response?.data || e.message,
+            );
+
+            toggleError(true);
+        } finally {
+            toggleLoading(false);
+        }
     }
-
-    function handleSubmit(event) {
-        event.preventDefault();
-        console.log(formData);
-    }
-
-
 
     return (
         <AuthLayout
             title="Login"
             footer={
-                <p>
+                <>
                     Nog geen account?{' '}
                     <Link to="/registreren">
                         Registreer hier
                     </Link>
-                </p>
+                </>
             }
         >
-            <form
-                onSubmit={handleSubmit}
-            >
+            <form onSubmit={handleSubmit}>
                 <FormField
                     id="email"
                     label="E-mailadres"
                     type="email"
                     name="email"
                     placeholder="E-mail"
-                    value={formData.email}
-                    onChange={handleChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
+                    required
                 />
 
                 <FormField
@@ -60,15 +92,23 @@ function SignIn() {
                     type="password"
                     name="password"
                     placeholder="Wachtwoord"
-                    value={formData.password}
-                    onChange={handleChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     autoComplete="current-password"
+                    required
                 />
 
+                {error && (
+                    <p className={styles.error} role="alert">
+                        Inloggen is mislukt. Controleer je gegevens.
+                    </p>
+                )}
+
                 <PrimaryButton
-                    text="Inloggen"
+                    text={loading ? 'Bezig met inloggen...' : 'Inloggen'}
                     type="submit"
                     fullWidth
+                    disabled={loading}
                 />
             </form>
         </AuthLayout>

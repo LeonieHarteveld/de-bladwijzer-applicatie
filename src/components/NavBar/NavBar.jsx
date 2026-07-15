@@ -1,5 +1,5 @@
 import styles from './NavBar.module.scss'
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {NavLink} from 'react-router-dom';
 import logo from '../../assets/images/logo.png'
 import logoMobile from '../../assets/images/logo-mobile.png'
@@ -12,9 +12,13 @@ import {
     AddIcon,
     LogoutIcon,
 } from "../Icons/Icons.jsx";
+import { AuthContext } from '../../context/AuthContext';
 
 function NavBar() {
-    const [menuOpen, toggleMenuOpen] = useState(false)
+    const [menuOpen, toggleMenuOpen] = useState(false);
+    const { isAuth, logout } = useContext(AuthContext);
+
+
 
     const handleNavClick = () => {
         if (window.innerWidth <= 768) {
@@ -95,6 +99,8 @@ function NavBar() {
 
                 <button
                     className={styles.navbar__logout}
+                    type="button"
+                    onClick={logout}
                 >
                     <LogoutIcon />
                     <span>Uitloggen</span>
