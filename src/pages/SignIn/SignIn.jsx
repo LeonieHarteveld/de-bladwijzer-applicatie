@@ -45,11 +45,7 @@ function SignIn() {
                 },
             );
 
-            login(response.data.token, {
-                email: response.data.user.email,
-                roles: response.data.user.roles,
-            });
-
+            login(response.data.token);
         } catch (e) {
             console.error(e);
 

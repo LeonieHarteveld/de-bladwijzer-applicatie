@@ -1,13 +1,12 @@
-import {
-    createContext,
-    useEffect,
-    useState,
-} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {createContext, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
+import axios from 'axios';
+import {API_BASE_URL, API_KEY,} from '../constants/api.jsx';
 
 export const AuthContext = createContext({});
 
-function AuthContextProvider({ children }) {
+function AuthContextProvider({children}) {
     const navigate = useNavigate();
 
     const [authState, setAuthState] = useState({
@@ -18,9 +17,8 @@ function AuthContextProvider({ children }) {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
 
-        if (!token || !storedUser) {
+        if (!token) {
             setAuthState({
                 isAuth: false,
                 user: null,
@@ -31,21 +29,15 @@ function AuthContextProvider({ children }) {
         }
 
         try {
-            const user = JSON.parse(storedUser);
-
-            setAuthState({
-                isAuth: true,
-                user,
-                status: 'done',
-            });
-        } catch (error) {
-            console.error(
-                'Opgeslagen gebruiker kon niet worden gelezen:',
-                error,
+            const decodedToken = jwtDecode(token);
+            void fetchUserData(
+                decodedToken.userId,
+                token,
             );
+        } catch (e) {
+            console.error(e);
 
             localStorage.removeItem('token');
-            localStorage.removeItem('user');
 
             setAuthState({
                 isAuth: false,
@@ -55,25 +47,33 @@ function AuthContextProvider({ children }) {
         }
     }, []);
 
-    function login(token, user) {
-        localStorage.setItem('token', token);
-        localStorage.setItem(
-            'user',
-            JSON.stringify(user),
-        );
 
-        setAuthState({
-            isAuth: true,
-            user,
-            status: 'done',
-        });
+    function login(JWT) {
+        try {
+            const decodedToken = jwtDecode(JWT);
 
-        navigate('/');
+            localStorage.setItem('token', JWT);
+
+            void fetchUserData(
+                decodedToken.userId,
+                JWT,
+                '/',
+            );
+        } catch (e) {
+            console.error(e);
+
+            localStorage.removeItem('token');
+
+            setAuthState({
+                isAuth: false,
+                user: null,
+                status: 'done',
+            });
+        }
     }
 
     function logout() {
         localStorage.removeItem('token');
-        localStorage.removeItem('user');
 
         setAuthState({
             isAuth: false,
@@ -81,13 +81,63 @@ function AuthContextProvider({ children }) {
             status: 'done',
         });
 
-        navigate('/');
+        navigate('/login');
+    }
+
+    async function fetchUserData(
+        id,
+        token,
+    ) {
+        try {
+            const response = await axios.get(
+                `${API_BASE_URL}/users/${id}`,
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type':
+                            'application/json',
+                        'novi-education-project-id':
+                        API_KEY,
+                        Authorization:
+                            `Bearer ${token}`,
+                    },
+                },
+            );
+
+            const decodedToken = jwtDecode(token);
+
+            setAuthState({
+                isAuth: true,
+                user: {
+                    id:
+                        response.data.id ??
+                        decodedToken.userId,
+                    email:
+                        response.data.email ??
+                        decodedToken.email,
+                    roles:
+                        response.data.roles ??
+                        [decodedToken.role],
+                },
+                status: 'done',
+            });
+
+            navigate('/');
+        } catch (e) {
+            console.error(e);
+
+            localStorage.removeItem('token');
+
+            setAuthState({
+                isAuth: false,
+                user: null,
+                status: 'done',
+            });
+        }
     }
 
     const contextData = {
-        isAuth: authState.isAuth,
-        user: authState.user,
-        status: authState.status,
+        ...authState,
         login,
         logout,
     };
