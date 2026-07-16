@@ -11,9 +11,3 @@ export async function getGenres(signal) {
 
     return response.data;
 }
-
-export function sortGenresByName(genres) {
-    return [...genres].sort((genreA, genreB) =>
-        genreA.name.localeCompare(genreB.name),
-    );
-}

@@ -52,4 +52,9 @@
       resize: vertical;
     }
   }
+
+  &__error {
+    color: $warning-color;
+    padding-top: 0.5rem;
+  }
 }

@@ -2,10 +2,13 @@ import styles from './AddBook.module.scss'
 import PageLayout from "../../components/PageLayout/PageLayout.jsx";
 import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
+
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
+
 import {addBook} from "../../helpers/bookService.jsx";
 import {getAuthors, addAuthor} from "../../helpers/authorService.jsx";
-import {getGenres, sortGenresByName} from "../../helpers/genreService.jsx";
+import {getGenres} from "../../helpers/genreService.jsx";
+import {sortByName} from "../../helpers/sortHelper.js";
 
 function AddBook() {
     const navigate = useNavigate();
@@ -14,6 +17,7 @@ function AddBook() {
 
     const [loading, toggleLoading] = useState(true);
     const [error, toggleError] = useState(false);
+    const [isbnError, setIsbnError] = useState('');
 
     const [formData, setFormData] = useState({
         title: '',
@@ -31,33 +35,31 @@ function AddBook() {
             ...formData,
             [e.target.name]: e.target.value,
         });
+        if (e.target.name === 'isbn') {
+            setIsbnError('');
+        }
     }
 
     useEffect(() => {
         const controller = new AbortController();
 
         async function fetchFormOptions() {
-            toggleLoading(true);
-
             try {
+                toggleLoading(true);
+                toggleError(false);
+
                 const [authorData, genreData] = await Promise.all([
                     getAuthors(controller.signal),
                     getGenres(controller.signal),
                 ]);
 
-                setAuthors(authorData);
-                setGenres(genreData);
-            } catch (error) {
-                if (!controller.signal.aborted) {
-                    console.error(
-                        'Auteurs en genres ophalen is mislukt:',
-                        error
-                    );
-                }
+                setAuthors(sortByName(authorData));
+                setGenres(sortByName(genreData));
+            } catch (e) {
+                console.error(e);
+                toggleError(true);
             } finally {
-                if (!controller.signal.aborted) {
-                    toggleLoading(false);
-                }
+                toggleLoading(false);
             }
         }
 
@@ -71,26 +73,29 @@ function AddBook() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        toggleLoading(true);
-
-        const normalizedIsbn = formData.isbn.trim();
-
         try {
-            let authorId;
+            toggleLoading(true);
+            toggleError(false);
+
+            const normalizedIsbn = formData.isbn.replace(/[\s-]/g, '');
+            if (!/^\d{13}$/.test(normalizedIsbn)) {
+                setIsbnError(
+                    'Het ISBN moet uit precies 13 cijfers bestaan.',
+                );
+                return;
+            }
+
+            let authorId = Number(formData.authorId);
 
             if (formData.authorId === 'new') {
                 const createdAuthor = await addAuthor({
                     name: formData.authorName.trim(),
-                    description:
-                        formData.authorDescription.trim(),
+                    description: formData.authorDescription.trim(),
                 });
 
                 authorId = createdAuthor.id;
-            } else {
-                authorId = Number(formData.authorId);
             }
-
-            const newBook = {
+            const book = await addBook({
                 title: formData.title.trim(),
                 authorId,
                 isbn: normalizedIsbn,
@@ -99,22 +104,17 @@ function AddBook() {
                 description: formData.description.trim(),
                 image: `https://covers.openlibrary.org/b/isbn/${normalizedIsbn}-L.jpg`,
                 available: true,
-            };
+            });
 
-            const createdBook = await addBook(newBook);
-
-            navigate(`/boek-details/${createdBook.id}`);
+            navigate(`/boek-details/${book.id}`);
         } catch (error) {
-            console.error(
-                'Boek toevoegen is mislukt:',
-                error.response?.data ?? error
-            );
+            console.error(e);
+            toggleError(true);
         } finally {
             toggleLoading(false);
         }
     }
 
-    const sortedGenres = sortGenresByName(genres);
 
     return (
         <PageLayout
@@ -218,12 +218,18 @@ function AddBook() {
                         <input
                             id="isbn"
                             name="isbn"
-                            type="text"
+                            type="numeric"
                             placeholder="Bijv. 9789021046800"
                             value={formData.isbn}
                             onChange={handleChange}
                             required
                         />
+
+                        {isbnError && (
+                            <p className={styles.addBookForm__error}>
+                                {isbnError}
+                            </p>
+                        )}
                     </div>
 
                     <div className={styles.addBookForm__field}>
@@ -239,7 +245,7 @@ function AddBook() {
                                 Kies een genre
                             </option>
 
-                            {sortedGenres.map((genre) => (
+                            {genres.map((genre) => (
                                 <option
                                     key={genre.id}
                                     value={genre.id}
@@ -293,7 +299,7 @@ function AddBook() {
                 </fieldset>
             </form>
         </PageLayout>
-    )
+    );
 }
 
 export default AddBook;
