@@ -116,7 +116,6 @@ return (
                 </>
             )}
 
-
             {!loading && !error && (
                 <BookCardGrid books={filteredBooks}/>
             )}

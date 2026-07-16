@@ -2,7 +2,6 @@ import styles from './LoanCard.module.scss';
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
 import {useNavigate} from "react-router-dom";
 
-
 function LoanCard({bookId, img, title, author, returnDate}) {
     const navigate = useNavigate();
 
@@ -38,8 +37,7 @@ function LoanCard({bookId, img, title, author, returnDate}) {
                     fullWidth/>
             </div>
         </article>
-    )
-        ;
+    );
 }
 
 export default LoanCard;

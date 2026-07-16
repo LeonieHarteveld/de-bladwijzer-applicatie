@@ -1,4 +1,9 @@
+@use "../../styles/variables" as *;
+
 .home {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 
   &__title {
     display: flex;
@@ -8,5 +13,18 @@
   &__welcomeImg {
     width: 70px;
     align-items: center;
+  }
+
+  &__loanStatus{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+
+    width: 100%;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: $shadow-soft;
+    background-color: $primary-color;
   }
 }

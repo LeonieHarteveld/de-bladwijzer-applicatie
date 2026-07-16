@@ -1,24 +1,32 @@
 import styles from './Home.module.scss';
+
+import {useContext, useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+
 import PageLayout from '../../components/PageLayout/PageLayout.jsx';
-import welcomeImg from '../../assets/images/welcomeimg.png';
-
-import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-
 import GenreTabs from '../../components/GenreTabs/GenreTabs.jsx';
 import BookCardGrid from '../../components/BookCardGrid/BookCardGrid.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
+import NewestBooksCard from '../../components/NewestBooksCard/NewestBooksCard.jsx';
 
-import { libraryService }  from '../../helpers/libraryService.jsx';
+import welcomeImg from '../../assets/images/welcomeimg.png';
+import bookImg from "../../assets/images/BookImg.svg";
 
-import {
-    enrichBooks,
-    filterBooks,
-} from '../../helpers/bookHelper.jsx';
+import {AuthContext} from '../../context/AuthContext.jsx';
+
+import {libraryService} from '../../helpers/libraryService.jsx';
+import {getLoans} from '../../helpers/loanService.jsx';
+import {enrichBooks, filterBooks,} from '../../helpers/bookHelper.jsx';
+import {sortByNewest} from '../../helpers/sortHelper.js';
+import BookCard from "../../components/BookCard/BookCard.jsx";
 
 function Home() {
+    const {user} = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const [books, setBooks] = useState([]);
-    const [authors, setAuthors] = useState([]);
     const [genres, setGenres] = useState([]);
+    const [loans, setLoans] = useState([]);
 
     const [selectedGenre, setSelectedGenre] = useState(null);
 
@@ -26,75 +34,65 @@ function Home() {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        const controller = new AbortController();
+            const controller = new AbortController();
 
-        async function fetchLibrary() {
-            setLoading(true);
-            setError(false);
+            async function fetchHomeData() {
+                setLoading(true);
+                setError(false);
 
-            try {
-                const response = await libraryService(
-                    controller.signal
-                );
+                try {
+                    const [
+                        libraryData,
+                        allLoans,
+                    ] = await Promise.all([
+                        libraryService(controller.signal),
+                        getLoans(controller.signal),
+                    ]);
 
-                setBooks(response.books);
-                setAuthors(response.authors);
-                setGenres(response.genres);
-            } catch (error) {
-                if (!axios.isCancel(error)) {
-                    console.error(
-                        'Bibliotheekgegevens ophalen mislukt:',
-                        error
+                    const booksWithDetails = enrichBooks(
+                        libraryData.books,
+                        libraryData.authors,
+                        libraryData.genres,
                     );
 
+                    const userLoans = allLoans.filter(
+                        (loan) =>
+                            Number(loan.usersId) ===
+                            Number(user.id) &&
+                            loan.returned === false,
+                    );
+
+                    setBooks(booksWithDetails);
+                    setGenres(libraryData.genres);
+                    setLoans(userLoans);
+                } catch (e) {
+                    console.error(e);
                     setError(true);
-                }
-            } finally {
-                if (!controller.signal.aborted) {
+                } finally {
                     setLoading(false);
                 }
             }
-        }
 
-        fetchLibrary();
+            fetchHomeData();
 
-        return () => {
-            controller.abort();
-        };
-    }, []);
+            return () => {
+                controller.abort();
+            };
+        }, [user?.id]
+    );
 
-    const booksWithDetails = useMemo(() => {
-        return enrichBooks(
-            books,
-            authors,
-            genres
-        );
-    }, [books, authors, genres]);
+    const newestBooks = sortByNewest(books).slice(0, 3);
 
-    const filteredBooks = useMemo(() => {
-        return filterBooks(
-            booksWithDetails,
-            selectedGenre
-        );
-    }, [booksWithDetails, selectedGenre]);
+    const genreBooks = filterBooks(
+        books,
+        selectedGenre,
+        '',
+    );
 
     return (
-        <PageLayout
-            title={
-                <span className={styles.home__title}>
-                    Welkom terug
-
-                    <img
-                        className={styles.home__welcomeImg}
-                        src={welcomeImg}
-                        alt="Zwaaiende hand"
-                    />
-                </span>
-            }
-            subtitle="Ontdek boeken per genre"
-        >
+        <PageLayout>
             {loading && (
-                <p>Boeken worden geladen...</p>
+                <p>Homepage wordt geladen...</p>
             )}
 
             {!loading && error && (
@@ -104,15 +102,91 @@ function Home() {
             )}
 
             {!loading && !error && (
-                <>
-                    <GenreTabs
-                        genres={genres}
-                        selectedGenre={selectedGenre}
-                        onSelectGenre={setSelectedGenre}
-                    />
+                <div className={styles.home}>
+                    <header className={styles.home__header}>
+                        <h1 className={styles.home__title}>
+                            Welkom terug,{' '}
+                            {user?.email?.split('@')[0]}!
+                            <img
+                                className={
+                                    styles.home__welcomeImg
+                                }
+                                src={welcomeImg}
+                                alt="Zwaaiende hand"
+                            />
+                        </h1>
+                    </header>
 
-                    <BookCardGrid books={filteredBooks} />
-                </>
+                    <section
+                        className={styles.home__loanStatus}
+                    >
+                        <img src={bookImg} alt="Boek icon"/>
+
+                        <h2
+                            className={styles.home__loanNumber}
+                        >
+                            {loans.length}
+                        </h2>
+
+                        <div
+                            className={styles.loanTextWrapper}>
+                            <h3>
+                                {loans.length === 0
+                                    ? 'Geen boeken geleend'
+                                    : loans.length === 1
+                                        ? 'boek geleend'
+                                        : 'boeken geleend'}
+                            </h3>
+
+                            <p>
+                                {loans.length === 0
+                                    ? 'Je hebt momenteel geen boeken geleend.'
+                                    : loans.length === 1
+                                        ? 'Je hebt momenteel 1 boek geleend.'
+                                        : `Je hebt momenteel ${loans.length} boeken geleend.`}
+                            </p>
+                        </div>
+
+                        <PrimaryButton
+                            onClick={() => navigate("/mijn-leningen")}
+                            text="Bekijk leningen"
+                            type="button"
+                            size="medium"
+                            fullWidth={false}
+                        />
+
+                    </section>
+
+                    <section className={styles.home__section}>
+                        <h2>Nieuw in de bibliotheek</h2>
+                        <p>De laatst toegevoegde boeken</p>
+
+                        <ul className={styles.home__newestBooks}>
+                            {newestBooks.map((book) => (
+                                <li
+                                    key={book.id}
+                                    className={styles.home__newestBookItem}
+                                >
+                                    <NewestBooksCard book={book} />
+                                </li>
+                            ))}
+                        </ul>
+
+                    </section>
+
+                    <section className={styles.home__section}>
+                        <h2>Of ontdek per genre</h2>
+
+                        <GenreTabs
+                            genres={genres}
+                            selectedGenre={selectedGenre}
+                            onSelectGenre={setSelectedGenre}
+                        />
+
+                        <BookCardGrid books={genreBooks}/>
+
+                    </section>
+                </div>
             )}
         </PageLayout>
     );

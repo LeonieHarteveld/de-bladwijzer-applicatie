@@ -1,8 +1,6 @@
 import styles from './BookCard.module.scss';
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
-import { useNavigate } from "react-router-dom";
-
-
+import {useNavigate} from "react-router-dom";
 
 function BookCard({book}) {
     const navigate = useNavigate();
@@ -19,12 +17,12 @@ function BookCard({book}) {
                 className={styles.bookcard__inner}>
 
                 <div
-                className={styles.bookcard__imgWrapper}>
-                <img
-                    className={styles.bookcard__img}
-                    src={book.image}
-                    alt={book.title}/>
-            </div>
+                    className={styles.bookcard__imgWrapper}>
+                    <img
+                        className={styles.bookcard__img}
+                        src={book.image}
+                        alt={book.title}/>
+                </div>
                 <h3>{book.title}</h3>
                 <p>{book.author?.name}</p>
                 <h5 className={`${styles.bookcard__status} ${
@@ -43,8 +41,7 @@ function BookCard({book}) {
                     fullWidth/>
             </div>
         </article>
-    )
-        ;
+    );
 }
 
 export default BookCard;
