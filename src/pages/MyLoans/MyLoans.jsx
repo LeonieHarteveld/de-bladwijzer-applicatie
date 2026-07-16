@@ -37,7 +37,7 @@ function MyLoans() {
                 const userLoans = allLoans
                     .filter(
                         (loan) =>
-                            loan.userEmail === user.email,
+                            Number(loan.usersId) === user.id,
                     )
                     .map((loan) => {
                         const book = books.find(
@@ -72,7 +72,7 @@ function MyLoans() {
             controller.abort();
         };
 
-    }, [user.email]);
+    }, [user?.id]);
 
 
     return (
@@ -81,7 +81,7 @@ function MyLoans() {
             subtitle="Een overzicht van jouw huidige leningen"
         >
             {loading && (
-                <p>Boeken worden geladen...</p>
+                <p>Leningen worden geladen...</p>
             )}
 
             {!loading && error && (
