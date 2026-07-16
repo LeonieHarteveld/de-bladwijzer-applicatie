@@ -22,10 +22,10 @@ export async function addBook(bookData, signal) {
     return response.data;
 }
 
-export async function updateBook(bookData, signal) {
-    const response = await axios.put(
-        `${API_BASE_URL}/books/${bookData.id}`,
-        bookData,
+export async function updateBookAvailability(bookId, available, signal) {
+    const response = await axios.patch(
+        `${API_BASE_URL}/books/${bookId}`,
+        { available },
         getAuthConfig(signal),
     );
 

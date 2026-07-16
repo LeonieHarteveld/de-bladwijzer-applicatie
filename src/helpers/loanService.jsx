@@ -14,4 +14,12 @@ export async function addLoan(loanData, signal) {
     return response.data;
 };
 
+export async function getLoans(signal) {
+    const response = await axios.get(
+        `${API_BASE_URL}/loans`,
+        getAuthConfig(signal),
+    );
+
+    return response.data;
+};
 

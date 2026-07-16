@@ -1,14 +1,13 @@
 import styles from './LoanCard.module.scss';
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
 import {useNavigate} from "react-router-dom";
-import img from "../../assets/images/BookWorm.png"
 
 
-function LoanCard() {
+function LoanCard({bookId, img, title, author, returnDate}) {
     const navigate = useNavigate();
 
     function handleClick() {
-        navigate(`/boek-details/${book.id}`);
+        navigate(`/boek-details/${bookId}`);
     }
 
     return (
@@ -23,14 +22,14 @@ function LoanCard() {
                     <img
                         className={styles.loancard__img}
                         src={img}
-                        alt="title"/>
+                        alt={title}/>
                 </div>
-                <h3>"title"</h3>
-                <p>author</p>
+                <h3>{title}</h3>
+                <p>{author}</p>
                 <div
                     className={styles.loancard.dateWrapper}>
                     <h5>Inleverdatum:</h5>
-                    <h5>datum</h5>
+                    <h5>{returnDate}</h5>
                 </div>
 
                 <PrimaryButton

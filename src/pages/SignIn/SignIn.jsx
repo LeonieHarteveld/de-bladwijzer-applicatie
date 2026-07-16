@@ -30,11 +30,11 @@ function SignIn() {
         toggleLoading(true);
 
         try {
-            const result = await axios.post(
+            const response = await axios.post(
                 `${API_BASE_URL}/login`,
                 {
-                    email,
-                    password,
+                    "email": email,
+                    "password": password
                 },
                 {
                     headers: {
@@ -46,15 +46,12 @@ function SignIn() {
             );
 
             login(response.data.token, {
-                id: response.data.user.id,
                 email: response.data.user.email,
                 roles: response.data.user.roles,
             });
+
         } catch (e) {
-            console.error(
-                'Inloggen mislukt:',
-                e.response?.data || e.message,
-            );
+            console.error(e);
 
             toggleError(true);
         } finally {

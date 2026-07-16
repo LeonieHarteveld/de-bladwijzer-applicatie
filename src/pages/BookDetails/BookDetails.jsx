@@ -10,6 +10,7 @@ import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.
 import { libraryService } from '../../helpers/libraryService.jsx';
 import { enrichBooks } from '../../helpers/bookHelper.jsx';
 import { addLoan } from '../../helpers/loanService.jsx';
+import {updateBookAvailability} from "../../helpers/bookService.jsx"
 
 import { AuthContext } from '../../context/AuthContext.jsx';
 
@@ -47,7 +48,6 @@ function BookDetails() {
     const [loading, toggleLoading] = useState(true);
     const [error, toggleError] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
-    const [book, setBook] = useState(null);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -73,11 +73,7 @@ function BookDetails() {
                     (book) => book.id === Number(id),
                 );
 
-                const foundSingleBook = books.find(
-                    (book) => book.id === foundBook.id);
-
                 setSelectedBook(foundBook);
-                setBook(foundSingleBook);
 
             } catch (e) {
                 if (e.name !== 'AbortError') {
@@ -112,7 +108,12 @@ function BookDetails() {
                 loanDate,
                 returnDate,
                 returned: false,
-            });
+            })
+
+            await updateBookAvailability(
+                selectedBook.id,
+                false
+            )
 
             navigate('/mijn-leningen');
         } catch (e) {
@@ -122,8 +123,6 @@ function BookDetails() {
             toggleLoading(false);
         }
     }
-
-    console.log('Ingelogde gebruiker:', user);
 
     return (
         <PageLayout>
