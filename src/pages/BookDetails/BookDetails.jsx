@@ -1,84 +1,91 @@
-import styles from './BookDetails.module.scss'
-import BackButton from "../../components/Buttons/BackButton/BackButton.jsx";
-import PageLayout from "../../components/PageLayout/PageLayout.jsx";
-import {useNavigate, useParams} from "react-router-dom";
-import testafbeelding from "../../assets/images/nav-img.png"
-import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx"
-import axios from 'axios';
-import {libraryService} from "../../helpers/libraryService.jsx";
-import {
-    enrichBooks,
-} from '../../helpers/bookHelper.jsx';
-import {updateBook} from "../../helpers/bookService.jsx"
-import {useState, useEffect, useMemo} from "react";
-import {API_BASE_URL, API_KEY} from "../../constants/api.jsx";
+import styles from './BookDetails.module.scss';
+
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import BackButton from '../../components/Buttons/BackButton/BackButton.jsx';
+import PageLayout from '../../components/PageLayout/PageLayout.jsx';
+import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
+
+import { libraryService } from '../../helpers/libraryService.jsx';
+import { enrichBooks } from '../../helpers/bookHelper.jsx';
+import { addLoan } from '../../helpers/loanService.jsx';
+
+import { AuthContext } from '../../context/AuthContext.jsx';
+
+function formatDate(date) {
+    const year = date.getFullYear();
+
+    const month = String(
+        date.getMonth() + 1,
+    ).padStart(2, '0');
+
+    const day = String(
+        date.getDate(),
+    ).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+function createLoanDates() {
+    const loanDate = new Date();
+    const returnDate = new Date(loanDate);
+
+    returnDate.setDate(returnDate.getDate() + 14);
+
+    return {
+        loanDate: formatDate(loanDate),
+        returnDate: formatDate(returnDate),
+    };
+}
 
 function BookDetails() {
     const navigate = useNavigate();
-    const {id} = useParams();
+    const { id } = useParams();
+    const { user } = useContext(AuthContext);
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
-    const [books, setBooks] = useState([]);
-    const [authors, setAuthors] = useState([]);
-    const [genres, setGenres] = useState([]);
-
-    async function handleLoan() {
-        if (!selectedBook?.available) {
-            return;
-        }
-
-        try {
-            const updatedBook = await updateBook({
-                ...selectedBook,
-                available: false,
-            });
-
-            setBooks((currentBooks) =>
-                currentBooks.map((book) =>
-                    book.id === updatedBook.id
-                        ? updatedBook
-                        : book
-                )
-            );
-
-            navigate("/mijn-leningen");
-        } catch (error) {
-            console.error(
-                "Het lenen van het boek is mislukt:",
-                error
-            );
-        }
-    }
+    const [loading, toggleLoading] = useState(true);
+    const [error, toggleError] = useState(false);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [book, setBook] = useState(null);
 
     useEffect(() => {
         const controller = new AbortController();
 
         async function fetchBookDetails() {
-            setLoading(true);
-            setError(false);
+            toggleError(false);
+            toggleLoading(true);
+
             try {
-                const response = await libraryService(
-                    controller.signal
+                const {
+                    books,
+                    authors,
+                    genres,
+                } = await libraryService(controller.signal);
+
+                const booksWithDetails = enrichBooks(
+                    books,
+                    authors,
+                    genres,
                 );
 
-                setBooks(response.books);
-                setAuthors(response.authors);
-                setGenres(response.genres);
-            } catch (error) {
-                if (!axios.isCancel(error)) {
-                    console.error(
-                        'Bibliotheekgegevens ophalen mislukt:',
-                        error
-                    );
+                const foundBook = booksWithDetails.find(
+                    (book) => book.id === Number(id),
+                );
 
-                    setError(true);
+                const foundSingleBook = books.find(
+                    (book) => book.id === foundBook.id);
+
+                setSelectedBook(foundBook);
+                setBook(foundSingleBook);
+
+            } catch (e) {
+                if (e.name !== 'AbortError') {
+                    console.error(e);
+                    toggleError(true);
                 }
             } finally {
-                if (!controller.signal.aborted) {
-                    setLoading(false);
-                }
+                toggleLoading(false);
             }
         }
 
@@ -87,21 +94,36 @@ function BookDetails() {
         return () => {
             controller.abort();
         };
-    }, []);
+    }, [id]);
 
+    async function handleLoan() {
+        toggleError(false);
+        toggleLoading(true);
 
-    const booksWithDetails = useMemo(() => {
-        return enrichBooks(
-            books,
-            authors,
-            genres
-        );
-    }, [books, authors, genres]);
+        const {
+            loanDate,
+            returnDate,
+        } = createLoanDates();
 
-    const selectedBook = useMemo(() => {
-        return booksWithDetails.find(book => book.id === Number(id));
-    }, [booksWithDetails, id]);
+        try {
+            await addLoan({
+                userEmail: user.email,
+                bookId: selectedBook.id,
+                loanDate,
+                returnDate,
+                returned: false,
+            });
 
+            navigate('/mijn-leningen');
+        } catch (e) {
+            console.error(e);
+            toggleError(true);
+        } finally {
+            toggleLoading(false);
+        }
+    }
+
+    console.log('Ingelogde gebruiker:', user);
 
     return (
         <PageLayout>
@@ -115,89 +137,107 @@ function BookDetails() {
                 </p>
             )}
 
-            {!loading && !error && (
-            <div
-                className={styles.bookDetails}
-            >
-                <BackButton
-                    text="Terug naar overzicht"
-                    onClick={() => navigate(-1)}
-                />
+            {!loading && !error && !selectedBook && (
+                <p>Het boek is niet gevonden.</p>
+            )}
 
-                        <article
-                            className={styles.bookDetails__inner}
-                        >
-                            <div
-                                className={styles.bookDetails__imgWrapper}
-                            >
-                                <img
-                                    className={styles.bookDetails__img}
-                                    src={selectedBook.image}
-                                    alt={selectedBook.title}
-                                />
+            {!loading && !error && selectedBook && (
+                <div className={styles.bookDetails}>
+                    <BackButton
+                        text="Terug naar overzicht"
+                        onClick={() => navigate(-1)}
+                    />
+
+                    <article className={styles.bookDetails__inner}>
+                        <div className={styles.bookDetails__imgWrapper}>
+                            <img
+                                className={styles.bookDetails__img}
+                                src={selectedBook.image}
+                                alt={selectedBook.title}
+                            />
+                        </div>
+
+                        <div className={styles.bookDetails__text}>
+                            <div className={styles.bookDetails__textTop}>
+                                <h2>{selectedBook.author?.name}</h2>
+
+                                <h1>{selectedBook.title}</h1>
+
+                                <h5>
+                                    <span>
+                                        {selectedBook.genre?.icon}
+                                    </span>{' '}
+                                    {selectedBook.genre?.name}
+                                </h5>
+
+                                <h5
+                                    className={
+                                        styles.bookDetails__availability
+                                    }
+                                >
+                                    <span
+                                        className={
+                                            styles.bookDetails__statusDot
+                                        }
+                                    />
+
+                                    {selectedBook.available
+                                        ? 'Beschikbaar'
+                                        : 'Niet beschikbaar'}
+                                </h5>
                             </div>
 
-                            <div
-                                className={styles.bookDetails__text}
-                            >
-                                <div
-                                    className={styles.bookDetails__textTop}>
-                                    <h2>{selectedBook.author?.name}</h2>
-                                    <h1>{selectedBook.title}</h1>
+                            <div className={styles.bookDetails__textBottom}>
+                                <h3>Beschrijving</h3>
+                                <p>{selectedBook.description}</p>
+                            </div>
 
-
-                                    <h5>
-                                        <span>{selectedBook.genre?.icon}</span>{' '}
-                                        {selectedBook.genre?.name}
-                                    </h5>
-                                    <h5
-                                        className={styles.bookDetails__availability}
-                                    >
-                        <span
-                            className={styles.bookDetails__statusDot}
-                        />
-                                        {selectedBook.available
-                                            ? 'Beschikbaar'
-                                            : 'Niet beschikbaar'}</h5>
-                                </div>
-                                <div
-                                    className={styles.bookDetails__textBottom}>
-                                    <h3>Beschrijving</h3>
-                                    <p>{selectedBook.description}</p>
-                                </div>
-
-
-                                {selectedBook.available &&
+                            {selectedBook.available && (
                                 <PrimaryButton
                                     onClick={handleLoan}
                                     text="Lenen"
-                                    type='button'
+                                    type="button"
                                 />
-                                }
-                            </div>
-                        </article>
+                            )}
+                        </div>
+                    </article>
 
                     <section className={styles.bookDetails__info}>
-                <div className={styles.bookDetails__additionalInfo}>
-                    <h2>Over de auteur</h2>
-                    <h3>{selectedBook.author?.name}</h3>
-                    <p>{selectedBook.author?.description}</p>
-                </div>
+                        <div
+                            className={
+                                styles.bookDetails__additionalInfo
+                            }
+                        >
+                            <h2>Over de auteur</h2>
+                            <h3>{selectedBook.author?.name}</h3>
+                            <p>
+                                {selectedBook.author?.description}
+                            </p>
+                        </div>
 
-                <div className={styles.bookDetails__additionalInfo}>
-                    <h2>Over het genre</h2>
-                    <h3>
-                        <span>{selectedBook.genre?.icon}</span>{' '}
-                        {selectedBook.genre?.name}
-                    </h3>
-                    <p>{selectedBook.genre?.description}</p>
-                </div>
-            </section>
+                        <div
+                            className={
+                                styles.bookDetails__additionalInfo
+                            }
+                        >
+                            <h2>Over het genre</h2>
 
-            </div>
-)}
+                            <h3>
+                                <span>
+                                    {selectedBook.genre?.icon}
+                                </span>{' '}
+                                {selectedBook.genre?.name}
+                            </h3>
+
+                            <p>
+                                {selectedBook.genre?.description}
+                            </p>
+                        </div>
+                    </section>
+                </div>
+            )}
         </PageLayout>
-    )
+    );
 }
 
 export default BookDetails;

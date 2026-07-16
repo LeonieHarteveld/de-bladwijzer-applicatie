@@ -45,10 +45,11 @@ function SignIn() {
                 },
             );
 
-            login(
-                result.data.token,
-                result.data.user,
-            );
+            login(response.data.token, {
+                id: response.data.user.id,
+                email: response.data.user.email,
+                roles: response.data.user.roles,
+            });
         } catch (e) {
             console.error(
                 'Inloggen mislukt:',
