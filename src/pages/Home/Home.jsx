@@ -1,13 +1,13 @@
 import styles from './Home.module.scss';
 
 import {useContext, useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import GenreTabs from '../../components/GenreTabs/GenreTabs.jsx';
 import BookCardGrid from '../../components/BookCardGrid/BookCardGrid.jsx';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
-import NewestBooksGrid from '../../components/NewestCardsGrid/NewestCardsGrid.jsx';
+import NewestCardsGrid from '../../components/NewestCardsGrid/NewestCardsGrid.jsx';
 
 import welcomeImg from '../../assets/images/welcomeimg.png';
 import bookImg from "../../assets/images/BookImg.svg";
@@ -18,7 +18,6 @@ import {libraryService} from '../../helpers/libraryService.jsx';
 import {getLoans} from '../../helpers/loanService.jsx';
 import {enrichBooks, filterBooks,} from '../../helpers/bookHelper.jsx';
 import {sortByNewest} from '../../helpers/sortHelper.js';
-import BookCard from "../../components/BookCard/BookCard.jsx";
 
 function Home() {
     const {user} = useContext(AuthContext);
@@ -160,7 +159,7 @@ function Home() {
 
                     </section>
 
-                    <NewestBooksGrid books={newestBooks}/>
+                    <NewestCardsGrid books={newestBooks}/>
 
                     <section className={styles.home__section}>
 

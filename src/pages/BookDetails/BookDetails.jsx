@@ -1,24 +1,24 @@
 import styles from './BookDetails.module.scss';
 
-import { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {useState, useEffect, useContext} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import BackButton from '../../components/Buttons/BackButton/BackButton.jsx';
 import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
 
-import { libraryService } from '../../helpers/libraryService.jsx';
-import { enrichBooks } from '../../helpers/bookHelper.jsx';
-import { addLoan } from '../../helpers/loanService.jsx';
+import {libraryService} from '../../helpers/libraryService.jsx';
+import {enrichBooks} from '../../helpers/bookHelper.jsx';
+import {addLoan} from '../../helpers/loanService.jsx';
 import {updateBookAvailability} from "../../helpers/bookService.jsx"
-import { createLoanDates } from '../../helpers/dateHelper.js';
+import {createLoanDates} from '../../helpers/dateHelper.js';
 
-import { AuthContext } from '../../context/AuthContext.jsx';
+import {AuthContext} from '../../context/AuthContext.jsx';
 
 function BookDetails() {
     const navigate = useNavigate();
-    const { id } = useParams();
-    const { user } = useContext(AuthContext);
+    const {id} = useParams();
+    const {user} = useContext(AuthContext);
 
     const [loading, toggleLoading] = useState(true);
     const [error, toggleError] = useState(false);
@@ -51,10 +51,8 @@ function BookDetails() {
                 setSelectedBook(foundBook);
 
             } catch (e) {
-                if (e.name !== 'AbortError') {
-                    console.error(e);
-                    toggleError(true);
-                }
+                console.error(e);
+                toggleError(true);
             } finally {
                 toggleLoading(false);
             }
@@ -145,15 +143,15 @@ function BookDetails() {
                                 </h5>
 
                                 <h5
-                                    className={
-                                        styles.bookDetails__availability
-                                    }
+                                    className={`${styles.bookDetails__availability} ${
+                                        selectedBook.available
+                                            ? styles.bookDetails__available
+                                            : styles.bookDetails__unavailable
+                                    }`}
                                 >
-                                    <span
-                                        className={
-                                            styles.bookDetails__statusDot
-                                        }
-                                    />
+    <span
+        className={styles.bookDetails__statusDot}
+    />
 
                                     {selectedBook.available
                                         ? 'Beschikbaar'
