@@ -7,7 +7,7 @@ import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import GenreTabs from '../../components/GenreTabs/GenreTabs.jsx';
 import BookCardGrid from '../../components/BookCardGrid/BookCardGrid.jsx';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
-import NewestBooksCard from '../../components/NewestBooksCard/NewestBooksCard.jsx';
+import NewestBooksGrid from '../../components/NewestCardsGrid/NewestCardsGrid.jsx';
 
 import welcomeImg from '../../assets/images/welcomeimg.png';
 import bookImg from "../../assets/images/BookImg.svg";
@@ -90,7 +90,21 @@ function Home() {
     );
 
     return (
-        <PageLayout>
+        <PageLayout
+            title={
+                !loading
+                    ? (
+                        <span className={styles.home__titleContent}>
+                    Welkom terug, {user?.email?.split('@')[0]}!
+                    <img
+                        className={styles.home__welcomeImg}
+                        src={welcomeImg}
+                        alt=""
+                    />
+                </span>
+                    )
+                    : null
+            }>
             {loading && (
                 <p>Homepage wordt geladen...</p>
             )}
@@ -103,48 +117,37 @@ function Home() {
 
             {!loading && !error && (
                 <div className={styles.home}>
-                    <header className={styles.home__header}>
-                        <h1 className={styles.home__title}>
-                            Welkom terug,{' '}
-                            {user?.email?.split('@')[0]}!
-                            <img
-                                className={
-                                    styles.home__welcomeImg
-                                }
-                                src={welcomeImg}
-                                alt="Zwaaiende hand"
-                            />
-                        </h1>
-                    </header>
-
                     <section
                         className={styles.home__loanStatus}
                     >
-                        <img src={bookImg} alt="Boek icon"/>
-
-                        <h2
-                            className={styles.home__loanNumber}
-                        >
-                            {loans.length}
-                        </h2>
-
                         <div
-                            className={styles.loanTextWrapper}>
-                            <h3>
-                                {loans.length === 0
-                                    ? 'Geen boeken geleend'
-                                    : loans.length === 1
-                                        ? 'boek geleend'
-                                        : 'boeken geleend'}
-                            </h3>
+                            className={styles.home__loanDetails}>
+                            <img src={bookImg} alt="Boek icon"/>
 
-                            <p>
-                                {loans.length === 0
-                                    ? 'Je hebt momenteel geen boeken geleend.'
-                                    : loans.length === 1
-                                        ? 'Je hebt momenteel 1 boek geleend.'
-                                        : `Je hebt momenteel ${loans.length} boeken geleend.`}
-                            </p>
+                            <h2
+                                className={styles.home__loanNumber}
+                            >
+                                {loans.length}
+                            </h2>
+
+                            <div
+                                className={styles.home__loanTextWrapper}>
+                                <h3>
+                                    {loans.length === 0
+                                        ? 'Geen boeken geleend'
+                                        : loans.length === 1
+                                            ? 'boek geleend'
+                                            : 'boeken geleend'}
+                                </h3>
+
+                                <p>
+                                    {loans.length === 0
+                                        ? 'Je hebt momenteel geen boeken geleend.'
+                                        : loans.length === 1
+                                            ? 'Je hebt momenteel 1 boek geleend.'
+                                            : `Je hebt momenteel ${loans.length} boeken geleend.`}
+                                </p>
+                            </div>
                         </div>
 
                         <PrimaryButton
@@ -157,25 +160,9 @@ function Home() {
 
                     </section>
 
-                    <section className={styles.home__section}>
-                        <h2>Nieuw in de bibliotheek</h2>
-                        <p>De laatst toegevoegde boeken</p>
-
-                        <ul className={styles.home__newestBooks}>
-                            {newestBooks.map((book) => (
-                                <li
-                                    key={book.id}
-                                    className={styles.home__newestBookItem}
-                                >
-                                    <NewestBooksCard book={book} />
-                                </li>
-                            ))}
-                        </ul>
-
-                    </section>
+                    <NewestBooksGrid books={newestBooks}/>
 
                     <section className={styles.home__section}>
-                        <h2>Of ontdek per genre</h2>
 
                         <GenreTabs
                             genres={genres}

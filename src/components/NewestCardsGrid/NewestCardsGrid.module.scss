@@ -1,0 +1,21 @@
+@use "../../styles/mixins" as *;
+
+.newestCardsGrid {
+  &__list {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+
+    list-style: none;
+
+    @include tablet{
+      flex-direction: column;
+      flex-wrap: wrap;
+    }
+  }
+  &__item {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+  }
+}

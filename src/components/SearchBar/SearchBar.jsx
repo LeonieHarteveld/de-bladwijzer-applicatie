@@ -28,18 +28,18 @@ function SearchBar({initialValue = ""}) {
 
     return (
         <div
-            className={styles.search__bar}>
+            className={styles.searchBar}>
             <form
-                className={styles.search__form}
+                className={styles.searchBar__form}
                 onSubmit={handleSubmit}
             >
                 <button
-                    className={styles.search__button}
+                    className={styles.searchBar__button}
                     type="submit">
                     <img src={searchIcon} alt="Zoekknop"/>
                 </button>
                 <input
-                    className={styles.search__input}
+                    className={styles.searchBar__input}
                     type="search"
                     value={searchInput}
                     placeholder="Zoek op boek, auteur of ISBN"

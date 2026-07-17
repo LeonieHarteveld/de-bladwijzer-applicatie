@@ -13,9 +13,13 @@
   }
 
   &__navbar {
-    flex-shrink: 0;
+    flex: 1 1 20%;
     min-height: 100vh;
     background-color: $accent-color;
+
+    @include tablet {
+      flex: 1 1 200px;
+    }
 
     @include mobile {
       width: 100%;
@@ -25,7 +29,6 @@
   }
 
   &__main {
-    flex: 1;
-    min-width: 0;
+    flex: 1 1 80%;
   }
 }

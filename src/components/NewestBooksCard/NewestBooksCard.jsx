@@ -1,8 +1,8 @@
 import styles from "./NewestBooksCard.module.scss";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton.jsx";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-function NewestBooksCard({ book }) {
+function NewestBooksCard({book}) {
     const navigate = useNavigate();
 
     function handleClick() {
@@ -16,19 +16,25 @@ function NewestBooksCard({ book }) {
                     <img
                         className={styles.newestBooksCard__img}
                         src={book.image}
-                        alt={book.title}
+                        alt={`Boekomslag van ${book.title}`}
                     />
                 </div>
 
-                <h3>{book.title}</h3>
-                <p>{book.author?.name}</p>
-                <p>{book.description}</p>
+                <div className={styles.newestBooksCard__textWrapper}>
 
-                <PrimaryButton
-                    onClick={handleClick}
-                    text="Bekijk"
-                    fullWidth
-                />
+                        <h3>{book.title}</h3>
+                        <p className={styles.newestBooksCard__author}>{book.author?.name}</p>
+                        <p className={styles.newestBooksCard__description}>
+                            {book.description}
+                        </p>
+
+                    <PrimaryButton
+                        onClick={handleClick}
+                        text="Bekijk"
+                        type="button"
+                        fullWidth
+                    />
+                </div>
             </div>
         </article>
     );

@@ -40,6 +40,7 @@ nav {
   .navbar__top {
     display: flex;
     align-items: center;
+
     @include mobile {
       display: flex;
       flex-direction: row;

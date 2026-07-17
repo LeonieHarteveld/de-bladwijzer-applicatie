@@ -1,13 +1,13 @@
 // _mixins.scss
 
 @mixin tablet {
-  @media (max-width: 1024px) {
+  @media (max-width: 992px) {
     @content;
   }
 }
 
 @mixin mobile {
-  @media (max-width: 767px) {
+  @media (max-width: 576px) {
     @content;
   }
 }

@@ -1,6 +1,6 @@
 import styles from './App.module.scss';
-import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
-import { useContext } from 'react'
+import {Routes, Route, Outlet, Navigate} from 'react-router-dom';
+import {useContext} from 'react'
 
 
 import NavBar from './components/NavBar/NavBar.jsx';
@@ -17,14 +17,14 @@ import NotFound from './pages/NotFound/NotFound.jsx';
 import {AuthContext} from './context/AuthContext.jsx';
 
 function App() {
-    const { isAuth, user } = useContext(AuthContext);
+    const {isAuth, user} = useContext(AuthContext);
 
     function MainLayout() {
         return (
             <div className={styles.app__inner}>
-                <NavBar />
+                <NavBar/>
                 <main className={styles.app__main}>
-                    <Outlet />
+                    <Outlet/>
                 </main>
             </div>
         );
@@ -33,27 +33,27 @@ function App() {
     function AuthRouteLayout() {
         return (
             <div className={styles.app__auth}>
-                <Outlet />
+                <Outlet/>
             </div>
         );
     }
 
     return (
         <Routes>
-            {/* Zonder navigatie, met footer */}
-            <Route element={<AuthRouteLayout />}>
-                <Route path="/login" element={<SignIn />} />
-                <Route path="/registreren" element={<SignUp />} />
+            <Route element={<AuthRouteLayout/>}>
+                <Route path="/login" element={<SignIn/>}/>
+                <Route path="/registreren" element={<SignUp/>}/>
             </Route>
 
-            {/* Met navigatie en footer */}
-            <Route element={<MainLayout />}>
-                <Route path="/" element={isAuth? <Home />  : <Navigate to="/login"/>} />
-                <Route path="/mijn-leningen" element={isAuth? <MyLoans /> : <Navigate to="/login"/>} />
-                <Route path="/zoekpagina" element={isAuth? <Search /> : <Navigate to="/login"/>} />
-                <Route path="/boek-details/:id" element={isAuth? <BookDetails /> : <Navigate to="/login"/>}/>
-                <Route path="/boek-toevoegen" element={!isAuth ? <Navigate to="/login" replace /> : user?.roles?.includes('editor') ? <AddBook /> : <Navigate to="/" replace />}/>
-                <Route path="*" element={<NotFound />} />
+            <Route element={<MainLayout/>}>
+                <Route path="/" element={isAuth ? <Home/> : <Navigate to="/login"/>}/>
+                <Route path="/mijn-leningen" element={isAuth ? <MyLoans/> : <Navigate to="/login"/>}/>
+                <Route path="/zoekpagina" element={isAuth ? <Search/> : <Navigate to="/login"/>}/>
+                <Route path="/boek-details/:id" element={isAuth ? <BookDetails/> : <Navigate to="/login"/>}/>
+                <Route path="/boek-toevoegen"
+                       element={!isAuth ? <Navigate to="/login" replace/> : user?.roles?.includes('editor') ?
+                           <AddBook/> : <Navigate to="/" replace/>}/>
+                <Route path="*" element={<NotFound/>}/>
             </Route>
         </Routes>
     );

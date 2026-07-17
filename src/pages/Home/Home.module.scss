@@ -1,30 +1,58 @@
 @use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .home {
   display: flex;
   flex-direction: column;
   gap: 3rem;
 
-  &__title {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
   &__welcomeImg {
     width: 70px;
     align-items: center;
   }
 
-  &__loanStatus{
+  &__loanStatus {
     display: flex;
-    flex-direction: row;
+    flex: 1;
     align-items: center;
-    gap: 2rem;
+    gap: 3rem;
 
-    width: 100%;
-    padding: 2rem;
+    padding: 2rem 4rem 2rem 2.5rem;
     border-radius: 15px;
     box-shadow: $shadow-soft;
     background-color: $primary-color;
+
+    > :last-child {
+      margin-left: auto;
+      align-self: center;
+    }
+
+     @include mobile {
+        flex-direction: column;
+
+       > :last-child {
+         margin: 0;
+       }
+      }
+
+    img {
+      flex: 0 1 6rem;
+    }
+  }
+
+  &__loanNumber {
+    font-size: 4rem;
+  }
+  &__loanDetails {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__loanTextWrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 200px;
+    gap: 0.5rem;
   }
 }

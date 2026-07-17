@@ -1,25 +1,38 @@
-import styles from './PageLayout.module.scss'
-import SearchBar from '../../components/SearchBar/SearchBar.jsx'
+import styles from './PageLayout.module.scss';
 
-function PageLayout({title, subtitle, centered = false, children}) {
-    const innerClass = centered
-        ? `${styles.pagelayout__inner} ${styles.pagelayout__innerCentered}`
-        : styles.pagelayout__inner;
+import SearchBar from '../SearchBar/SearchBar.jsx';
+import Footer from '../Footer/Footer.jsx';
+
+function PageLayout({title, subtitle, centered = false, showSearchBar = true, children,}) {
+
+    const innerClassName = centered
+        ? `${styles.pageLayout__inner} ${styles.pageLayout__innerCentered}`
+        : styles.pageLayout__inner;
 
     return (
-        <section
-            className={styles.pagelayout}>
+        <div className={styles.pageShell}>
+            <div className={styles.pageLayout}>
+                {showSearchBar && (
+                    <div className={styles.pageLayout__searchBar}>
+                        <SearchBar/>
+                    </div>
+                )}
+                    {(title || subtitle) && (
+                            <main className={styles.pageLayout__inner}>
+                                <header className={styles.pageLayout__header}>
+                                    {title && <h1>{title}</h1>}
+                                    {subtitle && <h2>{subtitle}</h2>}
+                                </header>
 
-            <div className={styles.pagelayout__searchbar}>
-                <SearchBar/>
+                                {children}
+                            </main>
+                    )}
+
             </div>
-            <div className={innerClass}>
-                {title && <h1>{title}</h1>}
-                {subtitle && <h2>{subtitle}</h2>}
-                {children}
-            </div>
-        </section>
-    )
+
+            <Footer/>
+        </div>
+    );
 }
 
 export default PageLayout;

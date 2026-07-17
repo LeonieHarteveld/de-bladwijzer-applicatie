@@ -7,6 +7,8 @@ function GenreTabs({
                    }) {
     return (
         <section className={styles.genreTabs}>
+            <h2>Of ontdek per genre</h2>
+
             <ul className={styles.genreTabs__list}>
                 <li>
                     <button
