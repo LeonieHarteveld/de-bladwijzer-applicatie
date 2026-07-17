@@ -1,4 +1,5 @@
 @use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .bookCard {
   width: 240px;
@@ -9,6 +10,10 @@
 
 
   padding: 2rem;
+
+  @include mobile {
+    width: 400px;
+  }
 
   &__inner {
     display: flex;
@@ -27,11 +32,15 @@
 
   &__imgWrapper {
     display: flex;
-    align-items: center;
+    align-self: center;
     justify-content: center;
 
     height: 280px;
     width: 180px;
+
+    @include mobile {
+      width: 200px;
+    }
   }
 
   &__img {
