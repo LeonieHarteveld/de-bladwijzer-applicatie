@@ -11,10 +11,12 @@ function BookCardGrid({ books }) {
     }
 
     return (
-        <section className={styles.BookCardGrid}>
-            <ul className={styles.BookCardGrid__list}>
+        <section className={styles.bookCardGrid}>
+            <ul className={styles.bookCardGrid__list}>
                 {books.map((book) => (
-                    <li key={book.id}>
+                    <li
+                        className={styles.bookCardGrid__item}
+                        key={book.id}>
                         <BookCard
                             book={book}
                             author={book.author}

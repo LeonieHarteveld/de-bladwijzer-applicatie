@@ -1,10 +1,6 @@
 import styles from './GenreTabs.module.scss';
 
-function GenreTabs({
-                       genres,
-                       selectedGenre,
-                       onSelectGenre,
-                   }) {
+function GenreTabs({genres, selectedGenre, onSelectGenre}) {
     return (
         <section className={styles.genreTabs}>
             <h2>Of ontdek per genre</h2>

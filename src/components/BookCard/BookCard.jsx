@@ -11,27 +11,27 @@ function BookCard({book}) {
 
     return (
         <article
-            className={styles.bookcard}
+            className={styles.bookCard}
         >
             <div
-                className={styles.bookcard__inner}>
+                className={styles.bookCard__inner}>
 
                 <div
-                    className={styles.bookcard__imgWrapper}>
+                    className={styles.bookCard__imgWrapper}>
                     <img
-                        className={styles.bookcard__img}
+                        className={styles.bookCard__img}
                         src={book.image}
                         alt={book.title}/>
                 </div>
                 <h3>{book.title}</h3>
                 <p>{book.author?.name}</p>
-                <h5 className={`${styles.bookcard__status} ${
+                <h5 className={`${styles.bookCard__status} ${
                     book.available
-                        ? styles.bookcard__statusAvailable
-                        : styles.bookcard__statusUnavailable
+                        ? styles.bookCard__statusAvailable
+                        : styles.bookCard__statusUnavailable
                 }`}>
     <span
-        className={styles.bookcard__statusDot}
+        className={styles.bookCard__statusDot}
     />
                     {book.available ? 'Beschikbaar' : 'Niet beschikbaar'}
                 </h5>

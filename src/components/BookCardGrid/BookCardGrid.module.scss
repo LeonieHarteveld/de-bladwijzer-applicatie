@@ -1,11 +1,16 @@
-.BookCardGrid {
-  padding: 2rem 3rem 0 0;
+@use "../../styles/mixins" as *;
+
+.bookCardGrid {
+  padding: 2rem 0;
 
   &__list {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     gap: 3rem;
     list-style: none;
+
+    @include mobile {
+      justify-content: center;
+    }
   }
 }
