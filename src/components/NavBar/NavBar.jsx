@@ -19,9 +19,7 @@ function NavBar() {
     const {isAuth, logout, user} = useContext(AuthContext);
 
     const handleNavClick = () => {
-        if (window.innerWidth <= 600) {
             toggleMenuOpen(false);
-        }
     };
 
     function getNavLinkClass({ isActive }) {
@@ -31,7 +29,8 @@ function NavBar() {
     }
 
     return (
-        <nav>
+        <nav
+        className={styles.navbar}>
             <div className={styles.navbar__wrapper}>
                 <div className={styles.navbar__top}>
                     <div className={styles.navbar__logo}>
