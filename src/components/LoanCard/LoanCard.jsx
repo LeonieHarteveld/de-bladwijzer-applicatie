@@ -23,18 +23,23 @@ function LoanCard({bookId, img, title, author, returnDate}) {
                         src={img}
                         alt={title}/>
                 </div>
-                <h3>{title}</h3>
-                <p>{author}</p>
                 <div
-                    className={styles.loanCard.dateWrapper}>
-                    <h5>Inleverdatum:</h5>
-                    <h5>{returnDate}</h5>
-                </div>
+                    className={styles.loanCard__details}>
 
-                <PrimaryButton
-                    onClick={handleClick}
-                    text="Bekijk"
-                    fullWidth/>
+
+                    <h3>{title}</h3>
+                    <p>{author}</p>
+                    <div
+                        className={styles.loanCard.dateWrapper}>
+                        <h5>Inleverdatum:</h5>
+                        <h5>{returnDate}</h5>
+                    </div>
+
+                    <PrimaryButton
+                        onClick={handleClick}
+                        text="Bekijk"
+                        fullWidth/>
+                </div>
             </div>
         </article>
     );

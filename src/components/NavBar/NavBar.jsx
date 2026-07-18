@@ -19,7 +19,7 @@ function NavBar() {
     const {isAuth, logout, user} = useContext(AuthContext);
 
     const handleNavClick = () => {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 600) {
             toggleMenuOpen(false);
         }
     };
