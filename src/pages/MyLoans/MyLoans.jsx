@@ -135,7 +135,7 @@ function MyLoans() {
             )}
 
             {!loading && !error && loans.length === 0 && (
-                <p>De geleende boeken zijn niet gevonden.</p>
+                <p>Er zijn 0 boeken geleend.</p>
             )}
 
             {!loading && !error && loans.length > 0 && (
