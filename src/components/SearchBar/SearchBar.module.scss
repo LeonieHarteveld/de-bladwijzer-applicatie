@@ -18,6 +18,10 @@
     padding: 1rem 0;
   }
 
+  &.searchBarLeft {
+    justify-content: flex-start;
+  }
+
   &__form {
     display: flex;
     align-items: center;

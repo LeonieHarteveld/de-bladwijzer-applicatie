@@ -15,6 +15,26 @@ function MyLoans() {
     const [loading, toggleLoading] = useState(true);
     const [error, toggleError] = useState(false);
     const [loans, setLoans] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const [loansPerPage, setLoansPerPage] = useState(3);
+    const totalPages = Math.ceil(loans.length / loansPerPage);
+    const lastPage = Math.max(0, totalPages - 1);
+
+    const firstLoanIndex = currentPage * loansPerPage;
+
+    const visibleLoans = loans.slice(
+        firstLoanIndex,
+        firstLoanIndex + loansPerPage,
+    );
+
+    function showPreviousLoans() {
+        setCurrentPage((page) => Math.max(page - 1, 0));
+    }
+
+    function showNextLoans() {
+        setCurrentPage((page) => Math.min(page + 1, lastPage));
+    }
 
     useEffect(() => {
         const controller = new AbortController();
@@ -58,6 +78,7 @@ function MyLoans() {
                     });
 
                 setLoans(userLoans);
+                setCurrentPage(0);
             } catch (e) {
                 console.log(e);
                 toggleError(true);
@@ -74,6 +95,29 @@ function MyLoans() {
 
     }, [user?.id]);
 
+    useEffect(() => {
+        function updateLoansPerPage() {
+            if (window.innerWidth <= 600) {
+                setLoansPerPage(1);
+            } else if (window.innerWidth <= 900) {
+                setLoansPerPage(2);
+            } else {
+                setLoansPerPage(3);
+            }
+        }
+
+        updateLoansPerPage();
+
+        window.addEventListener('resize', updateLoansPerPage);
+
+        return () => {
+            window.removeEventListener('resize', updateLoansPerPage);
+        };
+    }, []);
+
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [loansPerPage]);
 
     return (
         <PageLayout
@@ -94,16 +138,46 @@ function MyLoans() {
                 <p>De geleende boeken zijn niet gevonden.</p>
             )}
 
-            {!loading && !error && loans.map((loan) => (
-                <LoanCard
-                    key={loan.id}
-                    bookId={loan.bookId}
-                    img={loan.book?.image}
-                    title={loan.book?.title}
-                    author={loan.author?.name}
-                    returnDate={loan.returnDate}
-                />
-            ))}
+            {!loading && !error && loans.length > 0 && (
+                <section className={styles.loans}>
+                    {currentPage > 0 && (
+                        <button
+                            type="button"
+                            className={`${styles.loans__arrow} ${styles['loans__arrow--left']}`}
+                            onClick={showPreviousLoans}
+                        >
+                            ‹
+                        </button>
+                    )}
+
+                    <ul className={styles.loans__list}>
+                        {visibleLoans.map((loan) => (
+                            <LoanCard
+                                key={loan.id}
+                                bookId={loan.bookId}
+                                img={loan.book?.image}
+                                title={loan.book?.title}
+                                author={loan.author?.name}
+                                returnDate={loan.returnDate}
+                            />
+                        ))}
+                    </ul>
+
+                    <div
+                        className={styles.loans__shelf}
+                    />
+
+                    {currentPage < lastPage && (
+                        <button
+                            type="button"
+                            className={`${styles.loans__arrow} ${styles['loans__arrow--right']}`}
+                            onClick={showNextLoans}
+                        >
+                            ›
+                        </button>
+                    )}
+                </section>
+            )}
 
         </PageLayout>
     )

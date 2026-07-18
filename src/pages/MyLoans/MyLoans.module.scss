@@ -1,0 +1,101 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.loans {
+  position: relative;
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  &__arrow {
+    position: absolute;
+    z-index: 4;
+    top: 125px;
+
+    display: grid;
+    place-items: center;
+
+    width: 48px;
+    height: 64px;
+    padding: 0;
+
+    color: $secondary-color;
+    font-size: 4rem;
+    line-height: 1;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &--left {
+      left: 0;
+    }
+
+    &--right {
+      right: 0;
+    }
+  }
+
+  &__shelf {
+    position: absolute;
+    z-index: 3;
+    top: 270px;
+    right: 5%;
+    left: 5%;
+
+    height: 30px;
+
+    background:
+            url("../../assets/images/eikenhout.jpg")
+            center / cover no-repeat;
+
+    border-radius: 4px;
+    box-shadow: $shadow-medium;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 100%;
+
+      width: 26px;
+      height: 40px;
+
+      background:
+              linear-gradient(
+                              rgb(0 0 0 / 18%),
+                              rgb(0 0 0 / 18%)
+              ),
+              url("../../assets/images/eikenhout.jpg")
+              center / cover no-repeat;
+
+      box-shadow: $shadow-medium;
+      content: "";
+    }
+
+    &::before {
+      left: 8%;
+
+      clip-path: polygon(
+                      0 0,
+                      100% 0,
+                      100% 100%,
+                      45% 100%
+      );
+    }
+
+    &::after {
+      right: 8%;
+
+      clip-path: polygon(
+                      0 0,
+                      100% 0,
+                      55% 100%,
+                      0 100%
+      );
+    }
+  }
+}

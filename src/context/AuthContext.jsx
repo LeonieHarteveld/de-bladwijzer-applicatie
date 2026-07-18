@@ -38,6 +38,7 @@ function AuthContextProvider({children}) {
             console.error(e);
 
             localStorage.removeItem('token');
+            localStorage.removeItem('user');
 
             setAuthState({
                 isAuth: false,
@@ -74,6 +75,7 @@ function AuthContextProvider({children}) {
 
     function logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
 
         setAuthState({
             isAuth: false,

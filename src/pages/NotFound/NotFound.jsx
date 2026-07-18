@@ -26,12 +26,13 @@ function NotFound() {
                 onClick={handleNavigate}
             />
             <div
-            className={styles.error__wrapper__img}>
-            <img
-                className={styles.error__img}
-                src={BookWorm}
-                alt="afbeelding van een boekenwormpje die uit een boekkomt"/>
+                className={styles.error__wrapperImg}>
+                <img
+                    className={styles.error__img}
+                    src={BookWorm}
+                    alt="afbeelding van een boekenwormpje die uit een boekkomt"/>
             </div>
+
         </PageLayout>
     )
 }

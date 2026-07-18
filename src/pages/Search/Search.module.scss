@@ -1,14 +1,12 @@
-.searchpage {
-  width: 100%;
-  padding: 6rem 5rem;
+@use "../../styles/mixins" as *;
 
-  &__inner {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.searchPage {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 5rem 3rem;
 
-    width: 100%;
+  @include mobile {
     padding: 2rem;
-    border-radius: 10px;
   }
 }

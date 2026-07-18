@@ -51,12 +51,9 @@ function SignUp() {
         <AuthLayout
             title="Registeren"
             footer={
-                <p>
-                    Heb je al een account?{' '}
-                    <Link to="/login">
-                        Log hier in!
-                    </Link>
-                </p>
+                <>
+                    Al een account? <Link to="/login">Log hier in</Link>
+                </>
             }
         >
             <form onSubmit={handleSubmit}>

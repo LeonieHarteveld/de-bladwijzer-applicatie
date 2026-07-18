@@ -4,7 +4,7 @@ import searchIcon from "../../assets/icons/search-icon.svg";
 import {useNavigate} from "react-router-dom";
 
 
-function SearchBar({initialValue = ""}) {
+function SearchBar({initialValue = '', align = 'right',}) {
     const [searchInput, setSearchInput] = useState(initialValue);
     const navigate = useNavigate();
 
@@ -28,7 +28,11 @@ function SearchBar({initialValue = ""}) {
 
     return (
         <div
-            className={styles.searchBar}>
+            className={`${styles.searchBar} ${
+                align === 'left'
+                    ? styles.searchBarLeft
+                    : ''
+            }`}>
             <form
                 className={styles.searchBar__form}
                 onSubmit={handleSubmit}
@@ -44,7 +48,7 @@ function SearchBar({initialValue = ""}) {
                     value={searchInput}
                     placeholder="Zoek op boek, auteur of ISBN"
                     onChange={e => setSearchInput(e.target.value)}
-                    />
+                />
             </form>
         </div>
     )

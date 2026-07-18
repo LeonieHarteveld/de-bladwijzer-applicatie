@@ -1,6 +1,7 @@
 import styles from './Search.module.scss'
 import SearchBar from '../../components/SearchBar/SearchBar.jsx'
 import {useSearchParams} from 'react-router-dom';
+import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 
 import {useEffect, useState} from 'react';
 import axios from 'axios';
@@ -69,60 +70,58 @@ function Search() {
         searchTerm,
     );
 
-return (
-    <section
-        className={styles.searchpage}>
-        <div
-            className={styles.searchpage__inner}>
-            <h1>Zoeken</h1>
-            <SearchBar initialValue={searchTerm}/>
+    return (
+        <PageLayout
+            showSearchBar={false}>
+            <section className={styles.searchPage}>
+                    <h1>Zoeken</h1>
 
-            {!searchTerm && (
-                <>
-                    <h2>Of ontdek per genre</h2>
+                    <SearchBar
+                        initialValue={searchTerm}
+                        align="left"
+                    />
 
-                    {loading && (
-                        <p>Boeken worden geladen...</p>
+                    {!searchTerm && (
+                        <>
+                            {loading && (
+                                <p>Boeken worden geladen...</p>
+                            )}
+
+                            {!loading && error && (
+                                <p>
+                                    Er ging iets mis. Probeer het opnieuw.
+                                </p>
+                            )}
+
+                            {!loading && !error && (
+                                <GenreTabs
+                                    genres={genres}
+                                    selectedGenre={selectedGenre}
+                                    onSelectGenre={setSelectedGenre}
+                                />
+                            )}
+                        </>
                     )}
 
-                    {!loading && error && (
-                        <p className="errorMessage">
-                            Er ging iets mis. Probeer het opnieuw.
-                        </p>
+                    {searchTerm && (
+                        <>
+                            <h2>Resultaten voor “{searchTerm}”</h2>
+
+                            <p>
+                                {filteredBooks.length}{' '}
+                                {filteredBooks.length === 1
+                                    ? 'boek gevonden'
+                                    : 'boeken gevonden'}
+                            </p>
+                        </>
                     )}
 
                     {!loading && !error && (
-                        <>
-                            <GenreTabs
-                                genres={genres}
-                                selectedGenre={selectedGenre}
-                                onSelectGenre={setSelectedGenre}
-                            />
-                        </>
+                        <BookCardGrid books={filteredBooks} />
                     )}
-                </>
-            )}
-
-            {searchTerm && (
-                <>
-                    <h2>Resultaten voor “{searchTerm}”</h2>
-
-                    <p>
-                        {filteredBooks.length}{' '}
-                        {filteredBooks.length === 1
-                            ? 'boek gevonden'
-                            : 'boeken gevonden'}
-                    </p>
-                </>
-            )}
-
-            {!loading && !error && (
-                <BookCardGrid books={filteredBooks}/>
-            )}
-
-        </div>
-    </section>
-)
+            </section>
+        </PageLayout>
+    );
 }
 
 export default Search

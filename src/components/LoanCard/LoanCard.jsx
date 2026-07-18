@@ -11,22 +11,22 @@ function LoanCard({bookId, img, title, author, returnDate}) {
 
     return (
         <article
-            className={styles.loancard}
+            className={styles.loanCard}
         >
             <div
-                className={styles.loancard__inner}>
+                className={styles.loanCard__inner}>
 
                 <div
-                    className={styles.loan__imgWrapper}>
+                    className={styles.loanCard__imgWrapper}>
                     <img
-                        className={styles.loancard__img}
+                        className={styles.loanCard__img}
                         src={img}
                         alt={title}/>
                 </div>
                 <h3>{title}</h3>
                 <p>{author}</p>
                 <div
-                    className={styles.loancard.dateWrapper}>
+                    className={styles.loanCard.dateWrapper}>
                     <h5>Inleverdatum:</h5>
                     <h5>{returnDate}</h5>
                 </div>
