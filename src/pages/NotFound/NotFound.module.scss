@@ -1,5 +1,6 @@
-.error {
+@use "../../styles/variables" as *;
 
+.error {
   &__wrapperImg {
     align-self: center;
     width: min(100%, 22rem);

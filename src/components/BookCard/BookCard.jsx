@@ -38,7 +38,8 @@ function BookCard({book}) {
                 <PrimaryButton
                     onClick={handleClick}
                     text="Bekijk"
-                    fullWidth/>
+                    size="small"
+                    fullWidth={true}/>
             </div>
         </article>
     );

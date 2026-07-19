@@ -53,8 +53,8 @@ function SignUp() {
             const result = await axios.post(
                 `${API_BASE_URL}/users`,
                 {
-                    email: email,
-                    password: password,
+                    email: formData.email,
+                    password: formData.password,
                     roles: ['member'],
                 },
                 {
@@ -73,7 +73,6 @@ function SignUp() {
 
         toggleLoading(false);
     }
-
 
     return (
         <AuthLayout
@@ -108,7 +107,7 @@ function SignUp() {
 
                 {error && (
                     <p className={styles.signInForm__error}>
-                        Inloggen is mislukt. Controleer je gegevens.
+                        Registreren is mislukt. Controleer je gegevens.
                     </p>
                 )}
 
@@ -116,7 +115,7 @@ function SignUp() {
 
                 <PrimaryButton
                     text={loading
-                        ? 'Bezig met inloggen...'
+                        ? 'Bezig met registreren...'
                         : 'Registreren'}
                     type="submit"
                     fullWidth

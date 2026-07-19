@@ -16,7 +16,8 @@ function GenreTabs({genres, selectedGenre, onSelectGenre}) {
                         type="button"
                         onClick={() => onSelectGenre(null)}
                     >
-                        Alle
+                        <spangit a>▦</spangit>
+                        <span>Alle</span>
                     </button>
                 </li>
 
