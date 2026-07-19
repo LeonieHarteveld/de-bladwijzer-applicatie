@@ -32,7 +32,7 @@ function NewestBooksCard({book}) {
                         onClick={handleClick}
                         text="Bekijk"
                         type="button"
-                        fullWidth
+                        size="small"
                     />
                 </div>
             </div>

@@ -1,45 +1,50 @@
-@use '../../../styles/_variables' as *;
+@use "../../../styles/variables" as *;
 
 .primaryButton {
-  background-color: $secondary-color;
-  color:  $text-secondary-color;
-  box-shadow: $shadow-soft;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
 
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.8rem;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
 
-width: fit-content;
-max-width: 100%;
   align-self: flex-start;
 
+  background-color: $secondary-color;
+  color: $text-secondary-color;
+  box-shadow: $shadow-soft;
+  border: 0;
+  border-radius: 0.4rem;
+
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 5%;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+
+  cursor: pointer;
 
   &:hover {
     background-color: $text-secondary-color;
-    color:  $secondary-color;
+    color: $secondary-color;
   }
 
   &--small {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.875rem;
+    padding: 0.4rem 2rem;
+    font-size: 0.75rem;
   }
 
   &--medium {
-    padding: 0.75rem 2.5rem;
-    font-size: 1rem;
-  }
-
-  &--large {
-    padding: 1rem 2.5rem;
-    font-size: 1.125rem;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.875rem;
   }
 
   &--fullWidth {
     width: 100%;
+    align-self: stretch;
   }
-
 }
-
