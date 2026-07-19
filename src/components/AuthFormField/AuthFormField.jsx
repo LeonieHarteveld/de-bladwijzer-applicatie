@@ -1,14 +1,6 @@
-import styles from "./FormField.module.scss"
+import styles from './AuthFormField.module.scss';
 
-function FormField({
-                       id,
-                       label,
-                       type = 'text',
-                       name,
-                       placeholder,
-                       value,
-                       onChange,
-                   }) {
+function AuthFormField({id, label, type = 'text', name, placeholder, value, onChange, error,}) {
     return (
         <div className={styles.formField}>
             <label
@@ -26,10 +18,18 @@ function FormField({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
-                required
+                error={error}
             />
+
+            {error && (
+                <p
+                    className={styles.formField__error}
+                >
+                    {error}
+                </p>
+            )}
         </div>
     );
 }
 
-export default FormField;
+export default AuthFormField;

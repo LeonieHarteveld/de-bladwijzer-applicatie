@@ -164,7 +164,7 @@ function MyLoans() {
                     </ul>
 
                     <div
-                    className={styles.shelfWrapper}>
+                        className={styles.shelfWrapper}>
                         <div
                             className={styles.loans__shelf}
                         />

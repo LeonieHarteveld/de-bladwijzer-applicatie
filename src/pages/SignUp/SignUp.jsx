@@ -4,20 +4,48 @@ import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 import AuthLayout from '../../components/AuthLayout/AuthLayout.jsx';
-import FormField from '../../components/FormField/FormField.jsx';
+import AuthFormField from '../../components/AuthFormField/AuthFormField.jsx';
 import PrimaryButton from '../../components/Buttons/PrimaryButton/PrimaryButton.jsx';
+
 import {API_BASE_URL, API_KEY} from "../../constants/api.jsx";
+import validateAuthInput from '../../helpers/validateAuthInput.js';
 
 function SignUp() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
+    const [authError, setAuthError] = useState('');
+
     const navigate = useNavigate();
+
+    function handleChange(e) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+
+        setAuthError('');
+        toggleError(false);
+    }
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        const errorInput = validateAuthInput(
+            formData.email,
+            formData.password
+        );
+
+        if (errorInput) {
+            setAuthError(errorInput);
+            return;
+        }
+
+        setAuthError('');
         toggleError(false);
         toggleLoading(true);
 
@@ -56,35 +84,40 @@ function SignUp() {
                 </>
             }
         >
-            <form onSubmit={handleSubmit}>
-                <FormField
+            <form onSubmit={handleSubmit} noValidate>
+                <AuthFormField
                     id="email"
                     label="E-mailadres"
                     type="email"
                     name="email"
                     placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    required
+                    value={formData.email}
+                    onChange={handleChange}
                 />
 
-                <FormField
+                <AuthFormField
                     id="password"
                     label="Wachtwoord"
                     type="password"
                     name="password"
                     placeholder="Wachtwoord"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    error={authError}
                 />
 
-                {error && <p className="error">Dit account bestaat al. Probeer een ander emailadres.</p>}
+                {error && (
+                    <p className={styles.signInForm__error}>
+                        Inloggen is mislukt. Controleer je gegevens.
+                    </p>
+                )}
+
+                {error && <p className="error">Inloggen is mislukt. Controleer je gegevens.</p>}
 
                 <PrimaryButton
-                    text={loading ? 'Bezig met inloggen...' : 'Registreren'}
+                    text={loading
+                        ? 'Bezig met inloggen...'
+                        : 'Registreren'}
                     type="submit"
                     fullWidth
                     disabled={loading}

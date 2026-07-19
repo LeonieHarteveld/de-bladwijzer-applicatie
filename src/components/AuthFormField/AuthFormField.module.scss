@@ -23,4 +23,9 @@
     border: 0;
     clip: rect(0, 0, 0, 0);
   }
+
+  &__error {
+    padding: 0.75rem;
+    color: #b42318;
+  }
 }
