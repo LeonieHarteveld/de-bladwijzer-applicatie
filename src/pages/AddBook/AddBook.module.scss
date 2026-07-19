@@ -2,7 +2,7 @@
 @use '../../styles/_mixins' as *;
 
 .addBookForm {
-  padding: 3rem 20rem 3rem 3rem;
+  padding: 3rem 7rem 3rem 3rem;
   border-radius: 1rem;
   box-shadow: $shadow-soft;
 
@@ -20,7 +20,6 @@
     padding: 2rem;
     border: none;
   }
-
 
   &__legend {
     padding: 0 0.25rem;

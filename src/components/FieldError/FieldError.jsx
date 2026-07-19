@@ -1,4 +1,4 @@
-import styles from './AddBook.module.scss';
+import styles from '../../pages/AddBook/AddBook.module.scss';
 
 function FieldError({message}) {
     if (!message) {

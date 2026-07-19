@@ -9,6 +9,8 @@ import {addBook} from "../../helpers/bookService.jsx";
 import {getAuthors, addAuthor} from "../../helpers/authorService.jsx";
 import {getGenres} from "../../helpers/genreService.jsx";
 import {sortByName} from "../../helpers/sortHelper.js";
+import validateBookForm from "../../helpers/formValidation.js"
+import FieldError from "../../components/FieldError/FieldError.jsx"
 
 function AddBook() {
     const navigate = useNavigate();
@@ -18,6 +20,7 @@ function AddBook() {
     const [loading, toggleLoading] = useState(true);
     const [error, toggleError] = useState(false);
     const [isbnError, setIsbnError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
 
     const [formData, setFormData] = useState({
         title: '',
@@ -35,6 +38,12 @@ function AddBook() {
             ...formData,
             [e.target.name]: e.target.value,
         });
+
+        setFieldErrors((previousErrors) => ({
+            ...previousErrors,
+            [e.target.name]: '',
+        }));
+
         if (e.target.name === 'isbn') {
             setIsbnError('');
         }
@@ -72,6 +81,14 @@ function AddBook() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        const validationErrors = validateBookForm(formData);
+
+        setFieldErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
 
         try {
             toggleLoading(true);
@@ -115,7 +132,6 @@ function AddBook() {
         }
     }
 
-
     return (
         <PageLayout
             title="Boek toevoegen"
@@ -130,10 +146,10 @@ function AddBook() {
                 <p>Er ging iets mis</p>
             )}
 
-
             <form
                 className={styles.addBookForm}
                 onSubmit={handleSubmit}
+                noValidate
             >
                 <fieldset className={styles.addBookForm__fieldset}>
                     <legend className={styles.addBookForm__legend}>
@@ -151,6 +167,7 @@ function AddBook() {
                             onChange={handleChange}
                             required
                         />
+                        <FieldError message={fieldErrors.title}/>
                     </div>
 
                     <div className={styles.addBookForm__field}>
@@ -178,6 +195,7 @@ function AddBook() {
                                 + Nieuwe auteur toevoegen
                             </option>
                         </select>
+                        <FieldError message={fieldErrors.authorId}/>
                     </div>
 
                     {formData.authorId === 'new' && (
@@ -195,6 +213,7 @@ function AddBook() {
                                     onChange={handleChange}
                                     required
                                 />
+                                <FieldError message={fieldErrors.authorName}/>
                             </div>
 
                             <div className={styles.addBookForm__field}>
@@ -209,6 +228,7 @@ function AddBook() {
                                     onChange={handleChange}
                                     required
                                 />
+                                <FieldError message={fieldErrors.authorDescription}/>
                             </div>
                         </>
                     )}
@@ -254,6 +274,7 @@ function AddBook() {
                                 </option>
                             ))}
                         </select>
+                        <FieldError message={fieldErrors.genreId}/>
                     </div>
 
                     <div className={styles.addBookForm__field}>
@@ -268,6 +289,7 @@ function AddBook() {
                             onChange={handleChange}
                             required
                         />
+                        <FieldError message={fieldErrors.publicationDate}/>
                     </div>
 
                     <div className={styles.addBookForm__field}>
@@ -289,6 +311,8 @@ function AddBook() {
                             <span className={styles.addBookForm__textarea}>
                                 {formData.description.length}/500
                             </span>
+
+                            <FieldError message={fieldErrors.description}/>
                         </div>
                     </div>
 

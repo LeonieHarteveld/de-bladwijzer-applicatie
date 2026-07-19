@@ -120,7 +120,7 @@ function SignIn() {
                             : 'Inloggen'
                     }
                     type="submit"
-                    size="large"
+                    fullWidth
                     disabled={loading}
                 />
             </form>

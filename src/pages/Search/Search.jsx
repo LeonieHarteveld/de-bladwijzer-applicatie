@@ -63,7 +63,6 @@ function Search() {
     };
 }, []);
 
-
     const filteredBooks = filterBooks(
         books,
         selectedGenre,

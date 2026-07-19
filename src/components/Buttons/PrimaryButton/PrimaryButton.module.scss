@@ -5,15 +5,14 @@
   align-items: center;
   justify-content: center;
 
-  width: 100%;
-  min-height: 3.25rem;
+  width: fit-content;
   padding: 0.7rem 2rem;
 
   background-color: $secondary-color;
   color: $text-secondary-color;
   box-shadow: $shadow-soft;
   border: 0;
-  border-radius: 0.4rem;
+  border-radius: 1rem;
 
   font-weight: 700;
   cursor: pointer;
@@ -24,8 +23,10 @@
   }
 
   &--medium {
+    margin: 1rem 0;
     padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
+    width: 20%;
+    font-size: 1rem;
   }
 
   &--large {
@@ -36,6 +37,7 @@
 
   &--fullWidth {
     width: 100%;
+    font-size: 1.5rem;
     align-self: stretch;
   }
 }
