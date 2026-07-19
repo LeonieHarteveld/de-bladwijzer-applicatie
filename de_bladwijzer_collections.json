@@ -1,0 +1,455 @@
+{
+  "collections": [
+    {
+      "name": "books",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "min": 1,
+          "max": 200
+        },
+        {
+          "name": "authorId",
+          "type": "reference:authors",
+          "required": true
+        },
+        {
+          "name": "isbn",
+          "type": "string",
+          "required": true,
+          "min": 10,
+          "max": 13
+        },
+        {
+          "name": "genreId",
+          "type": "reference:genres",
+          "required": true
+        },
+        {
+          "name": "publicationDate",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": true,
+          "max": 1000
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "max": 3500
+        },
+        {
+          "name": "available",
+          "type": "boolean",
+          "required": true,
+          "default": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "member",
+          "editor"
+        ],
+        "POST": [
+          "member",
+          "editor"
+        ],
+        "PUT": [
+          "member",
+          "editor"
+        ],
+        "PATCH": [
+          "member",
+          "editor"
+        ],
+        "DELETE": [
+          "editor"
+        ]
+      }
+    },
+    {
+      "name": "authors",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "min": 2,
+          "max": 100
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "min": 10,
+          "max": 500
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "member",
+          "editor"
+        ],
+        "POST": [
+          "editor"
+        ],
+        "PUT": [
+          "editor"
+        ],
+        "PATCH": [
+          "editor"
+        ],
+        "DELETE": [
+          "editor"
+        ]
+      }
+    },
+    {
+      "name": "genres",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "min": 2,
+          "max": 50
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "required": false,
+          "min": 1,
+          "max": 50
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "min": 10,
+          "max": 500
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "member",
+          "editor"
+        ],
+        "POST": [
+          "editor"
+        ],
+        "PUT": [
+          "editor"
+        ],
+        "PATCH": [
+          "editor"
+        ],
+        "DELETE": [
+          "editor"
+        ]
+      }
+    },
+       {
+      "name": "loans",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "usersId",
+          "type": "reference:users",
+          "required": true
+        },
+        {
+          "name": "bookId",
+          "type": "reference:books",
+          "required": true
+        },
+        {
+          "name": "loanDate",
+          "type": "date",
+          "required": false,
+          "default": "CurrentDate"
+        },
+        {
+          "name": "returnDate",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "returned",
+          "type": "boolean",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "member",
+          "editor",
+          "admin"
+        ],
+        "POST": [
+          "member",
+          "editor",
+          "admin"
+        ],
+        "PUT": [
+          "editor",
+          "admin"
+        ],
+        "PATCH": [
+          "editor",
+          "admin"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    }
+  ],
+  "users": [
+       {
+"id": 1,
+      "email": "medewerker@bladwijzer.nl",
+      "password": "medewerker123",
+      "roles": [
+        "editor"
+      ]
+    },
+    {
+"id": 2,
+      "email": "lid@voorbeeld.nl",
+      "password": "gebruiker123",
+      "roles": [
+        "member"
+      ]
+    }
+  ],
+  "data": {
+    "authors": [
+      {
+        "id": 1,
+        "name": "J.R.R. Tolkien",
+        "description": "Britse schrijver en taalwetenschapper, vooral bekend om zijn invloedrijke fantasyverhalen over Midden-aarde."
+      },
+      {
+        "id": 2,
+        "name": "J.K. Rowling",
+        "description": "Britse auteur die wereldwijd bekend werd met de populaire Harry Potter-boekenreeks."
+      },
+      {
+        "id": 3,
+        "name": "Yuval Noah Harari",
+        "description": "Israëlische historicus en schrijver die complexe ontwikkelingen uit de menselijke geschiedenis toegankelijk beschrijft."
+      },
+      {
+        "id": 4,
+        "name": "George Orwell",
+        "description": "Britse schrijver en journalist, bekend om zijn kritische verhalen over macht, politiek en onderdrukking."
+      },
+      {
+        "id": 5,
+        "name": "Dan Brown",
+        "description": "Amerikaanse thrillerauteur die historische mysteries, kunst en geheime genootschappen in spannende verhalen verwerkt."
+      },
+      {
+        "id": 6,
+        "name": "Paulo Coelho",
+        "description": "Braziliaanse schrijver die in zijn romans vaak thema's als dromen, zingeving en persoonlijke groei onderzoekt."
+      },
+      {
+        "id": 7,
+        "name": "Suzanne Collins",
+        "description": "Amerikaanse auteur die vooral bekend is om spannende young-adultverhalen over macht, overleving en verzet."
+      }
+    ],
+    "genres": [
+      {
+        "id": 1,
+        "name": "Fantasy",
+        "icon": "✨",
+        "description": "Verhalen met magische werelden, bijzondere wezens en avonturen die buiten de werkelijkheid plaatsvinden."
+      },
+      {
+        "id": 2,
+        "name": "Geschiedenis",
+        "icon": "🏛️",
+        "description": "Boeken die gebeurtenissen, samenlevingen en ontwikkelingen uit het verleden beschrijven en verklaren."
+      },
+      {
+        "id": 3,
+        "name": "Dystopie",
+        "icon": "👁️",
+        "description": "Verhalen over sombere toekomstige samenlevingen waarin vrijheid, controle en macht centraal staan."
+      },
+      {
+        "id": 4,
+        "name": "Satire",
+        "icon": "🎭",
+        "description": "Verhalen die humor, overdrijving en ironie gebruiken om de maatschappij of menselijk gedrag te bekritiseren."
+      },
+      {
+        "id": 5,
+        "name": "Thriller",
+        "icon": "🔍",
+        "description": "Spannende verhalen vol gevaar, geheimen en onverwachte wendingen die de lezer in spanning houden."
+      },
+      {
+        "id": 6,
+        "name": "Roman",
+        "icon": "📖",
+        "description": "Verhalende literatuur waarin personages, relaties en persoonlijke ontwikkeling centraal staan."
+      },
+      {
+        "id": 7,
+        "name": "Young Adult",
+        "icon": "🧑",
+        "description": "Boeken voor jongvolwassen lezers, vaak over identiteit, relaties, keuzes en volwassen worden."
+      }
+    ],
+    "books": [
+      {
+        "id": 1,
+        "title": "De Hobbit",
+        "authorId": 1,
+        "isbn": "9780048231888",
+        "genreId": 1,
+        "publicationDate": "1937-09-21",
+        "image": "https://covers.openlibrary.org/b/isbn/9780048231888-L.jpg",
+        "description": "Bilbo Balings gaat samen met Gandalf en een groep dwergen op een gevaarlijke reis om hun schat terug te veroveren.",
+        "available": true
+      },
+      {
+        "id": 2,
+        "title": "In de Ban van de Ring",
+        "authorId": 1,
+        "isbn": "9780395647387",
+        "genreId": 1,
+        "publicationDate": "1954-07-29",
+        "image": "https://covers.openlibrary.org/b/isbn/9780395193952-L.jpg",
+        "description": "Frodo Balings moet de Ene Ring vernietigen voordat deze in handen valt van de duistere heer Sauron.",
+        "available": false
+      },
+      {
+        "id": 3,
+        "title": "Harry Potter en de Steen der Wijzen",
+        "authorId": 2,
+        "isbn": "9780545790352",
+        "genreId": 1,
+        "publicationDate": "1997-06-26",
+        "image": "https://covers.openlibrary.org/b/isbn/9780545790352-L.jpg",
+        "description": "Harry ontdekt dat hij een tovenaar is en begint zijn eerste jaar op Zweinstein.",
+        "available": true
+      },
+      {
+        "id": 4,
+        "title": "Harry Potter en de Geheime Kamer",
+        "authorId": 2,
+        "isbn": "9780439420105",
+        "genreId": 1,
+        "publicationDate": "1998-07-02",
+        "image": "https://covers.openlibrary.org/b/isbn/9780439420105-L.jpg",
+        "description": "Tijdens zijn tweede schooljaar wordt Zweinstein geteisterd door mysterieuze aanvallen.",
+        "available": true
+      },
+      {
+        "id": 5,
+        "title": "Sapiens",
+        "authorId": 3,
+        "isbn": "9781846558238",
+        "genreId": 2,
+        "publicationDate": "2011-01-01",
+        "image": "https://ia800100.us.archive.org/view_archive.php?archive=/5/items/l_covers_0012/l_covers_0012_53.zip&file=0012531613-L.jpg",
+        "description": "Een overzicht van de ontwikkeling van de mens, van jagers-verzamelaars tot de moderne samenleving.",
+        "available": true
+      },
+      {
+        "id": 6,
+        "title": "1984",
+        "authorId": 4,
+        "isbn": "9780198185215",
+        "genreId": 3,
+        "publicationDate": "1949-06-08",
+        "image": "https://ia600100.us.archive.org/view_archive.php?archive=/5/items/l_covers_0012/l_covers_0012_69.zip&file=0012693610-L.jpg",
+        "description": "Een beklemmend verhaal over een totalitaire staat waarin iedereen voortdurend wordt gecontroleerd.",
+        "available": true
+      },
+      {
+        "id": 7,
+        "title": "Animal Farm",
+        "authorId": 4,
+        "isbn": "9780151002177",
+        "genreId": 4,
+        "publicationDate": "1945-08-17",
+        "image": "https://ia600404.us.archive.org/view_archive.php?archive=/33/items/l_covers_0010/l_covers_0010_21.zip&file=0010213530-L.jpg",
+        "description": "Boerderijdieren komen in opstand tegen hun eigenaar, maar vrijheid blijkt niet vanzelfsprekend.",
+        "available": true
+      },
+      {
+        "id": 8,
+        "title": "The Da Vinci Code",
+        "authorId": 5,
+        "isbn": "9780385504201",
+        "genreId": 5,
+        "publicationDate": "2003-03-18",
+        "image": "https://ia600507.us.archive.org/view_archive.php?archive=/8/items/l_covers_0009/l_covers_0009_32.zip&file=0009322690-L.jpg",
+        "description": "Robert Langdon onderzoekt een moord in het Louvre en raakt verwikkeld in een eeuwenoud mysterie.",
+        "available": true
+      },
+      {
+        "id": 9,
+        "title": "De Alchemist",
+        "authorId": 6,
+        "isbn": "9780061122415",
+        "genreId": 6,
+        "publicationDate": "1988-01-01",
+        "image": "https://ia600500.us.archive.org/view_archive.php?archive=/5/items/olcovers1/olcovers1-L.zip&file=11179-L.jpg",
+        "description": "Een jonge schaapherder volgt zijn droom en ontdekt onderweg de betekenis van zijn levensreis.",
+        "available": true
+      },
+      {
+        "id": 10,
+        "title": "The Hunger Games",
+        "authorId": 7,
+        "isbn": "9780439023481",
+        "genreId": 7,
+        "publicationDate": "2008-09-14",
+        "image": "https://ia800100.us.archive.org/view_archive.php?archive=/5/items/l_covers_0012/l_covers_0012_64.zip&file=0012646506-L.jpg",
+        "description": "Katniss Everdeen moet deelnemen aan een dodelijke wedstrijd waarin slechts één deelnemer kan overleven.",
+        "available": true
+      }
+    ],
+       "loans": [
+      {
+        "id": 1,
+        "usersId": 2,
+        "bookId": 2,
+        "loanDate": "2024-03-01",
+        "returnDate": "2024-03-21",
+        "returned": false
+          }
+    ]
+  }
+}
