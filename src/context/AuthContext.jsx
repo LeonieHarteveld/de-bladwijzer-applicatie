@@ -58,8 +58,9 @@ function AuthContextProvider({children}) {
             void fetchUserData(
                 decodedToken.userId,
                 JWT,
-                '/',
             );
+
+            navigate('/');
         } catch (e) {
             console.error(e);
 
@@ -123,8 +124,6 @@ function AuthContextProvider({children}) {
                 },
                 status: 'done',
             });
-
-            navigate('/');
         } catch (e) {
             console.error(e);
 
