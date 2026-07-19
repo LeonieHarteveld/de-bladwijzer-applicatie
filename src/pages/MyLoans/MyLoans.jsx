@@ -99,7 +99,7 @@ function MyLoans() {
         function updateLoansPerPage() {
             if (window.innerWidth <= 600) {
                 setLoansPerPage(1);
-            } else if (window.innerWidth <= 900) {
+            } else if (window.innerWidth <= 1100) {
                 setLoansPerPage(2);
             } else {
                 setLoansPerPage(3);
@@ -123,6 +123,7 @@ function MyLoans() {
         <PageLayout
             title="Mijn leningen"
             subtitle="Een overzicht van jouw huidige leningen"
+            card
         >
             {loading && (
                 <p>Leningen worden geladen...</p>
@@ -150,26 +151,22 @@ function MyLoans() {
                         </button>
                     )}
 
-                    <ul className={styles.loans__list}>
-                        {visibleLoans.map((loan) => (
-                            <LoanCard
-                                key={loan.id}
-                                bookId={loan.bookId}
-                                img={loan.book?.image}
-                                title={loan.book?.title}
-                                author={loan.author?.name}
-                                returnDate={loan.returnDate}
-                            />
-                        ))}
-                    </ul>
+                    <div className={styles.loans__content}>
+                        <ul className={styles.loans__list}>
+                            {visibleLoans.map((loan) => (
+                                <LoanCard
+                                    key={loan.id}
+                                    bookId={loan.bookId}
+                                    img={loan.book?.image}
+                                    title={loan.book?.title}
+                                    author={loan.author?.name}
+                                    returnDate={loan.returnDate}
+                                />
+                            ))}
+                        </ul>
 
-                    <div
-                        className={styles.shelfWrapper}>
-                        <div
-                            className={styles.loans__shelf}
-                        />
+                        <div className={styles.loans__shelf} />
                     </div>
-
 
                     {currentPage < lastPage && (
                         <button
@@ -181,6 +178,8 @@ function MyLoans() {
                         </button>
                     )}
                 </section>
+
+
             )}
 
         </PageLayout>

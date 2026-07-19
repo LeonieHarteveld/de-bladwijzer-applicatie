@@ -1,4 +1,5 @@
 @use '../../styles/_mixins' as *;
+@use "../../styles/variables" as *;
 
 .pageShell {
   display: flex;
@@ -25,8 +26,6 @@
     flex: 1;
     flex-direction: column;
     gap: 1,5rem;
-
-
   }
 
   &__header {
@@ -40,5 +39,23 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+  }
+
+  .pageLayout__innerCard {
+    width: 100%;
+    padding: 5rem;
+
+    background-color: $primary-color;
+    border-radius: 1rem;
+    box-shadow: $shadow-soft;
+
+
+  }
+
+  @include mobile {
+    .pageLayout__innerCard {
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+    }
   }
 }

@@ -19,6 +19,7 @@ function NotFound() {
         <PageLayout
             title="404"
             subtitle="Deze pagina is opgegeten"
+            card
             centered={true}
         >
                 <BackButton

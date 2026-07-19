@@ -38,9 +38,7 @@
       right: 0;
     }
   }
-&__shelfWrapper {
-  flex: 1 1 auto;
-}
+
   &__shelf {
     position: absolute;
     z-index: 3;
@@ -80,7 +78,6 @@
 
     &::before {
       left: 8%;
-
       clip-path: polygon(
                       0 0,
                       100% 0,
@@ -91,7 +88,6 @@
 
     &::after {
       right: 8%;
-
       clip-path: polygon(
                       0 0,
                       100% 0,

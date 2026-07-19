@@ -3,11 +3,15 @@ import styles from './PageLayout.module.scss';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import Footer from '../Footer/Footer.jsx';
 
-function PageLayout({title, subtitle, centered = false, showSearchBar = true, children,}) {
+function PageLayout({title, subtitle, centered = false, showSearchBar = true, card= false, children,}) {
 
-    const innerClassName = centered
-        ? `${styles.pageLayout__inner} ${styles.pageLayout__innerCentered}`
-        : styles.pageLayout__inner;
+    const innerClassName = [
+        styles.pageLayout__inner,
+        centered ? styles.pageLayout__innerCentered : '',
+        card ? styles.pageLayout__innerCard : '',
+    ]
+        .filter(Boolean)
+        .join(' ');
 
     return (
         <div className={styles.pageShell}>
