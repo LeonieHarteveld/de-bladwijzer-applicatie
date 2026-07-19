@@ -38,7 +38,9 @@
       right: 0;
     }
   }
-
+&__shelfWrapper {
+  flex: 1 1 auto;
+}
   &__shelf {
     position: absolute;
     z-index: 3;

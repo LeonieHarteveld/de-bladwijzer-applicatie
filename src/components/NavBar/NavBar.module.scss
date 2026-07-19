@@ -121,8 +121,7 @@
 
   ul {
     list-style: none;
-    width: 100%;
-    padding-right: 10px;
+    padding-right: 1rem;
   }
 
   li {
@@ -133,7 +132,7 @@
   .defaultMenuLink {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 1rem;
 
     width: 100%;
     padding: 0.9rem 1rem;

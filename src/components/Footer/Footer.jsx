@@ -4,7 +4,7 @@ function Footer() {
     return (
         <footer className={styles.footer}>
             <p>
-                &copy; 2026 De Bladwijzer Bibliotheek | All rights reserved
+                &copy; 2026 De Bladwijzer Bibliotheek
             </p>
         </footer>
     );

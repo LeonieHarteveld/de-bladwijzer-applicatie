@@ -76,7 +76,7 @@ function NavBar() {
                                      className={getNavLinkClass}
                                      onClick={handleNavClick}>
                                 <LoansIcon/>
-                                <span>Mijn leningen</span>
+                                <span>Leningen</span>
                             </NavLink>
                         </li>
                         <li>
@@ -93,7 +93,7 @@ function NavBar() {
                                          className={getNavLinkClass}
                                          onClick={handleNavClick}>
                                     <AddIcon/>
-                                    <span>Boek toevoegen</span>
+                                    <span>Toevoegen</span>
                                 </NavLink>
                             </li>
                         )}

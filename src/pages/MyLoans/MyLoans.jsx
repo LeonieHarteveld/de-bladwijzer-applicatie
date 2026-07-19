@@ -164,8 +164,12 @@ function MyLoans() {
                     </ul>
 
                     <div
-                        className={styles.loans__shelf}
-                    />
+                    className={styles.shelfWrapper}>
+                        <div
+                            className={styles.loans__shelf}
+                        />
+                    </div>
+
 
                     {currentPage < lastPage && (
                         <button
